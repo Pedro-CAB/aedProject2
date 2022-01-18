@@ -12,7 +12,7 @@ bool isFloat( string myString ) {
     return iss.eof() && !iss.fail();
 }
 
-void readFiles(){
+void readStops(){
     //Leitura das paragens
     ifstream fileReader;
     fileReader.open("../resources/stops.csv");
@@ -43,6 +43,34 @@ void readFiles(){
     }
     stops.pop_back();
     fileReader.close();
+}
+
+void readLines(){
+    //Leitura das paragens
+    ifstream fileReader;
+    fileReader.open("../resources/lines.csv");
+    vector<Line> lines;
+    if (fileReader.is_open()){
+        string dummy;
+        getline(fileReader, dummy);
+        while (!fileReader.eof()){
+            string line;
+            getline(fileReader,line);
+            stringstream lineReader(line);
+            string code,name;
+            getline(lineReader,code,',');
+            getline(lineReader,name,',');
+            Line l(code,name);
+            lines.push_back(l);
+        }
+    }
+    lines.pop_back();
+    fileReader.close();
+}
+
+void readFiles(){
+    readStops();
+    readLines();
 }
 
 int main() {

@@ -10,6 +10,7 @@
 using namespace::std;
 
 class Line {
+public:
     string code, name;
     list<Stop> stops;
     Line(string code, string name);
