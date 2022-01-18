@@ -10,6 +10,7 @@
 using namespace::std;
 
 class Stop {
+public:
     string code, name, zone;
     float lat, lon;
     Stop(string code, string name, string zone, float lat, float lon);
