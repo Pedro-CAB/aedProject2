@@ -80,6 +80,18 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/Line.cpp">
+			<Option target="aed2122_trabalho2"/>
+		</Unit>
+		<Unit filename="C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/Line.h">
+			<Option target="aed2122_trabalho2"/>
+		</Unit>
+		<Unit filename="C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/Stop.cpp">
+			<Option target="aed2122_trabalho2"/>
+		</Unit>
+		<Unit filename="C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/Stop.h">
+			<Option target="aed2122_trabalho2"/>
+		</Unit>
 		<Unit filename="C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/main.cpp">
 			<Option target="aed2122_trabalho2"/>
 		</Unit>

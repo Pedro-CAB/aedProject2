@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/aed2122_trabalho2.dir/Line.cpp.obj"
+  "CMakeFiles/aed2122_trabalho2.dir/Stop.cpp.obj"
   "CMakeFiles/aed2122_trabalho2.dir/main.cpp.obj"
   "aed2122_trabalho2.exe"
   "aed2122_trabalho2.exe.manifest"

@@ -8,6 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/Line.cpp" "C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/cmake-build-debug/CMakeFiles/aed2122_trabalho2.dir/Line.cpp.obj"
+  "C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/Stop.cpp" "C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/cmake-build-debug/CMakeFiles/aed2122_trabalho2.dir/Stop.cpp.obj"
   "C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/main.cpp" "C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/cmake-build-debug/CMakeFiles/aed2122_trabalho2.dir/main.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

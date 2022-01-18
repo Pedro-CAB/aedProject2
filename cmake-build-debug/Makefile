@@ -128,6 +128,54 @@ aed2122_trabalho2/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\aed2122_trabalho2.dir\build.make CMakeFiles/aed2122_trabalho2.dir/build
 .PHONY : aed2122_trabalho2/fast
 
+Line.obj: Line.cpp.obj
+.PHONY : Line.obj
+
+# target to build an object file
+Line.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\aed2122_trabalho2.dir\build.make CMakeFiles/aed2122_trabalho2.dir/Line.cpp.obj
+.PHONY : Line.cpp.obj
+
+Line.i: Line.cpp.i
+.PHONY : Line.i
+
+# target to preprocess a source file
+Line.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\aed2122_trabalho2.dir\build.make CMakeFiles/aed2122_trabalho2.dir/Line.cpp.i
+.PHONY : Line.cpp.i
+
+Line.s: Line.cpp.s
+.PHONY : Line.s
+
+# target to generate assembly for a file
+Line.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\aed2122_trabalho2.dir\build.make CMakeFiles/aed2122_trabalho2.dir/Line.cpp.s
+.PHONY : Line.cpp.s
+
+Stop.obj: Stop.cpp.obj
+.PHONY : Stop.obj
+
+# target to build an object file
+Stop.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\aed2122_trabalho2.dir\build.make CMakeFiles/aed2122_trabalho2.dir/Stop.cpp.obj
+.PHONY : Stop.cpp.obj
+
+Stop.i: Stop.cpp.i
+.PHONY : Stop.i
+
+# target to preprocess a source file
+Stop.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\aed2122_trabalho2.dir\build.make CMakeFiles/aed2122_trabalho2.dir/Stop.cpp.i
+.PHONY : Stop.cpp.i
+
+Stop.s: Stop.cpp.s
+.PHONY : Stop.s
+
+# target to generate assembly for a file
+Stop.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\aed2122_trabalho2.dir\build.make CMakeFiles/aed2122_trabalho2.dir/Stop.cpp.s
+.PHONY : Stop.cpp.s
+
 main.obj: main.cpp.obj
 .PHONY : main.obj
 
@@ -161,6 +209,12 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... aed2122_trabalho2
+	@echo ... Line.obj
+	@echo ... Line.i
+	@echo ... Line.s
+	@echo ... Stop.obj
+	@echo ... Stop.i
+	@echo ... Stop.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
