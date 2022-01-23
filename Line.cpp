@@ -7,5 +7,6 @@
 Line::Line(string code, string name) {
     this -> code = code;
     this -> name = name;
-    stops = {};
+    itinerary = {};
+    itineraryReverse = {};
 }

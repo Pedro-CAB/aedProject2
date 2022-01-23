@@ -12,7 +12,8 @@ using namespace::std;
 class Line {
 public:
     string code, name;
-    list<Stop> stops;
+    list<Stop> itinerary;
+    list<Stop> itineraryReverse;
     Line(string code, string name);
 };
 
