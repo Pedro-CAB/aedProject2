@@ -6,19 +6,27 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/Line.h
+C:/Users/Utilizador/OneDrive/Documentos/aedProject2/Line.cpp
+Line.h
+C:/Users/Utilizador/OneDrive/Documentos/aedProject2/Line.h
+
+C:/Users/Utilizador/OneDrive/Documentos/aedProject2/Line.h
 string
 -
 list
 -
 Stop.h
-C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/Stop.h
+C:/Users/Utilizador/OneDrive/Documentos/aedProject2/Stop.h
 
-C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/Stop.h
+C:/Users/Utilizador/OneDrive/Documentos/aedProject2/Stop.cpp
+Stop.h
+C:/Users/Utilizador/OneDrive/Documentos/aedProject2/Stop.h
+
+C:/Users/Utilizador/OneDrive/Documentos/aedProject2/Stop.h
 string
 -
 
-C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/main.cpp
+C:/Users/Utilizador/OneDrive/Documentos/aedProject2/main.cpp
 iostream
 -
 fstream
@@ -28,5 +36,5 @@ sstream
 vector
 -
 Line.h
-C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/Line.h
+C:/Users/Utilizador/OneDrive/Documentos/aedProject2/Line.h
 
