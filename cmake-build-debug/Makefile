@@ -152,6 +152,30 @@ Line.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\aed2122_trabalho2.dir\build.make CMakeFiles/aed2122_trabalho2.dir/Line.cpp.s
 .PHONY : Line.cpp.s
 
+Menu.obj: Menu.cpp.obj
+.PHONY : Menu.obj
+
+# target to build an object file
+Menu.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\aed2122_trabalho2.dir\build.make CMakeFiles/aed2122_trabalho2.dir/Menu.cpp.obj
+.PHONY : Menu.cpp.obj
+
+Menu.i: Menu.cpp.i
+.PHONY : Menu.i
+
+# target to preprocess a source file
+Menu.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\aed2122_trabalho2.dir\build.make CMakeFiles/aed2122_trabalho2.dir/Menu.cpp.i
+.PHONY : Menu.cpp.i
+
+Menu.s: Menu.cpp.s
+.PHONY : Menu.s
+
+# target to generate assembly for a file
+Menu.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\aed2122_trabalho2.dir\build.make CMakeFiles/aed2122_trabalho2.dir/Menu.cpp.s
+.PHONY : Menu.cpp.s
+
 Stop.obj: Stop.cpp.obj
 .PHONY : Stop.obj
 
@@ -212,6 +236,9 @@ help:
 	@echo ... Line.obj
 	@echo ... Line.i
 	@echo ... Line.s
+	@echo ... Menu.obj
+	@echo ... Menu.i
+	@echo ... Menu.s
 	@echo ... Stop.obj
 	@echo ... Stop.i
 	@echo ... Stop.s

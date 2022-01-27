@@ -89,13 +89,16 @@
 		<Unit filename="C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/Line.h">
 			<Option target="aed2122_trabalho2"/>
 		</Unit>
+		<Unit filename="C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/Menu.cpp">
+			<Option target="aed2122_trabalho2"/>
+		</Unit>
+		<Unit filename="C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/Menu.h">
+			<Option target="aed2122_trabalho2"/>
+		</Unit>
 		<Unit filename="C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/Stop.cpp">
 			<Option target="aed2122_trabalho2"/>
 		</Unit>
 		<Unit filename="C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/Stop.h">
-			<Option target="aed2122_trabalho2"/>
-		</Unit>
-		<Unit filename="C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/company.h">
 			<Option target="aed2122_trabalho2"/>
 		</Unit>
 		<Unit filename="C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/main.cpp">
