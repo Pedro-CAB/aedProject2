@@ -105,7 +105,6 @@ void readFiles() {
     vector<Line> lines = readLines(stops);
     //cout << stops.size() << " " << lines.size();
 }
-
 void createMaps(Company company){
     vector<Stop> stops = readStops();
     vector<Line> lines = readLines(stops);
@@ -122,6 +121,35 @@ void createMaps(Company company){
     }
 
 }
+
+void coord_input(){
+    int lat, lon;
+    string destination;
+    cout << "Insira a sua latitude atual:" << endl;
+    cout << "(Pressione 0 para voltar ao menu)"<<endl;
+    cin >> lat;
+    cout << "Insira a sua longitude atual:" <<endl;
+    cout << "(Pressione 0 para voltar ao menu)"<<endl;
+    cin >> lon;
+    cout << "Insira a paragem de destino:"<<endl;
+    cout << "(Pressione 0 para voltar ao menu)"<<endl;
+    cin >> destination;
+}
+
+void stop_options(){
+    string option;
+    cout << "Como prefere inserir a localizacao de partida?"<<endl;
+    cout << "A) Atraves das suas Coordenadas"<<endl;
+    cout << "B) Atraves do Nome da Paragem Escolhida"<<endl;
+    cout << "Pressione Q para fechar o programa." << endl;
+    cin >> option;
+}
+
+void menu_intro(){
+    cout << "======================== STCP Paragens ========================"<<endl;
+    cout << "Bem vindo ao assistente de utilizacao das rede STCP! Selecione "<<endl;
+    cout << "a opcao desejada de entre as abaixo:"<<endl;
+    }
 
 int main() {
     readFiles();

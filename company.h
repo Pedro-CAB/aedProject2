@@ -20,7 +20,4 @@ public:
         stops = {};
         lines = {};
     }
-
-    //Getters
-    list<Stop>;
 };
