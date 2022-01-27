@@ -6,12 +6,13 @@
 #define AED2122_TRABALHO2_COMPANY_H
 #include "Line.h"
 #include "Stop.h"
+#include <list>
 
 #endif //AED2122_TRABALHO2_COMPANY_H
 
 using namespace std;
 
-Class Company{
+class Company{
 public:
     vector<Stop> stops;
     vector<Line> lines;
@@ -21,5 +22,5 @@ public:
     }
 
     //Getters
-    list<Stop>
+    list<Stop>;
 };
