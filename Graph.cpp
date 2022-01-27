@@ -5,7 +5,7 @@
 #include "Graph.h"
 
 // Constructor: nr nodes and direction (default: undirected)
-graph::Graph(int num, bool dir) : n(num), hasDir(dir), nodes(num+1) {
+Graph::Graph(int num, bool dir) : n(num), hasDir(dir), nodes(num+1) {
 }
 
 // Add edge from source to destination with a certain weight
