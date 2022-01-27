@@ -5,15 +5,15 @@
 #ifndef AED2122_TRABALHO2_LINE_H
 #define AED2122_TRABALHO2_LINE_H
 #include <string>
-#include <list>
+#include <vector>
 #include "Stop.h"
 using namespace::std;
 
 class Line {
 public:
     string code, name;
-    list<Stop> itinerary;
-    list<Stop> itineraryReverse;
+    vector<Stop> itinerary;
+    vector<Stop> itineraryReverse;
     Line(string code, string name);
 };
 

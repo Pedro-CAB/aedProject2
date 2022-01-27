@@ -82,6 +82,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="C:/Users/Utilizador/FEUP/AED/aedProject2/Graph.h">
+			<Option target="aed2122_trabalho2"/>
+		</Unit>
 		<Unit filename="C:/Users/Utilizador/FEUP/AED/aedProject2/Line.cpp">
 			<Option target="aed2122_trabalho2"/>
 		</Unit>
