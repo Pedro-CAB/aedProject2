@@ -6,6 +6,7 @@
 #define AED2122_TRABALHO2_COMPANY_H
 #include "Line.h"
 #include "Stop.h"
+#include <list>
 
 #endif //AED2122_TRABALHO2_COMPANY_H
 
@@ -19,5 +20,4 @@ public:
         stops = {};
         lines = {};
     }
-
 };
