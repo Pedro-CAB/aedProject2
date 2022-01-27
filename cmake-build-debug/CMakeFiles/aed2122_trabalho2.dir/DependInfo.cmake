@@ -4,22 +4,13 @@ set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
 
 # The set of languages for which implicit dependencies are needed:
 set(CMAKE_DEPENDS_LANGUAGES
-  "CXX"
-  )
-# The set of files for implicit dependencies of each language:
-set(CMAKE_DEPENDS_CHECK_CXX
-  "C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/Line.cpp" "C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/cmake-build-debug/CMakeFiles/aed2122_trabalho2.dir/Line.cpp.obj"
-  "C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/Stop.cpp" "C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/cmake-build-debug/CMakeFiles/aed2122_trabalho2.dir/Stop.cpp.obj"
-  "C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/main.cpp" "C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/cmake-build-debug/CMakeFiles/aed2122_trabalho2.dir/main.cpp.obj"
-  )
-set(CMAKE_CXX_COMPILER_ID "GNU")
-
-# The include file search paths:
-set(CMAKE_CXX_TARGET_INCLUDE_PATH
   )
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "C:/Users/Utilizador/FEUP/AED/aedProject2/Line.cpp" "CMakeFiles/aed2122_trabalho2.dir/Line.cpp.obj" "gcc" "CMakeFiles/aed2122_trabalho2.dir/Line.cpp.obj.d"
+  "C:/Users/Utilizador/FEUP/AED/aedProject2/Stop.cpp" "CMakeFiles/aed2122_trabalho2.dir/Stop.cpp.obj" "gcc" "CMakeFiles/aed2122_trabalho2.dir/Stop.cpp.obj.d"
+  "C:/Users/Utilizador/FEUP/AED/aedProject2/main.cpp" "CMakeFiles/aed2122_trabalho2.dir/main.cpp.obj" "gcc" "CMakeFiles/aed2122_trabalho2.dir/main.cpp.obj.d"
   )
 
 # Targets to which this target links.
