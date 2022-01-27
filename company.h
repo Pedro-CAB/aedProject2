@@ -13,8 +13,8 @@ using namespace std;
 
 Class Company{
 public:
-    list<Stop> stops;
-    list<Line> lines;
+    vector<Stop> stops;
+    vector<Line> lines;
     Company(){
         stops = {};
         lines = {};

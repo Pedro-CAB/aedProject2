@@ -32,8 +32,6 @@ class Graph {
     int n;              // Graph size (vertices are numbered from 1 to n)
     bool hasDir;        // false: undirect; true: directed
     vector<Node> nodes; // The list of nodes being represented
-    map<string,int> StopIds;
-    map<string,int> LineIds;
 
 public:
     // Constructor: nr nodes and direction (default: undirected)
