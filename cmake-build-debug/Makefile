@@ -128,6 +128,30 @@ aed2122_trabalho2/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\aed2122_trabalho2.dir\build.make CMakeFiles/aed2122_trabalho2.dir/build
 .PHONY : aed2122_trabalho2/fast
 
+Graph.obj: Graph.cpp.obj
+.PHONY : Graph.obj
+
+# target to build an object file
+Graph.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\aed2122_trabalho2.dir\build.make CMakeFiles/aed2122_trabalho2.dir/Graph.cpp.obj
+.PHONY : Graph.cpp.obj
+
+Graph.i: Graph.cpp.i
+.PHONY : Graph.i
+
+# target to preprocess a source file
+Graph.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\aed2122_trabalho2.dir\build.make CMakeFiles/aed2122_trabalho2.dir/Graph.cpp.i
+.PHONY : Graph.cpp.i
+
+Graph.s: Graph.cpp.s
+.PHONY : Graph.s
+
+# target to generate assembly for a file
+Graph.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\aed2122_trabalho2.dir\build.make CMakeFiles/aed2122_trabalho2.dir/Graph.cpp.s
+.PHONY : Graph.cpp.s
+
 Line.obj: Line.cpp.obj
 .PHONY : Line.obj
 
@@ -233,6 +257,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... aed2122_trabalho2
+	@echo ... Graph.obj
+	@echo ... Graph.i
+	@echo ... Graph.s
 	@echo ... Line.obj
 	@echo ... Line.i
 	@echo ... Line.s

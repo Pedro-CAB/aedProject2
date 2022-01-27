@@ -11,27 +11,34 @@
 #include <queue>
 #include <iostream>
 
+#include "minHeap.h"
+#include <vector>
+#include <list>
+#include <iostream>
+
 using namespace std;
 
 class Graph {
-
     struct Edge {
         int dest;   // Destination node
         int weight; // An integer weight
-        int dist;
-        int idLine;
+        string line; //
     };
 
     struct Node {
         list<Edge> adj; // The list of outgoing edges (to adjacent nodes)
-        bool visited;   // As the node been visited on a search?
-        int pred;       //Predecessor
-        int idStop;
+        int dist;
+        int pred;
+        bool visited;
+        string name;
+        string zone;
     };
 
     int n;              // Graph size (vertices are numbered from 1 to n)
     bool hasDir;        // false: undirect; true: directed
-    vector<Node> nodes; // The list of nodes being represented
+    public: vector<Node> nodes; // The list of nodes being represented
+
+    void dijkstra(int s);
 
 public:
     // Constructor: nr nodes and direction (default: undirected)
@@ -40,11 +47,18 @@ public:
     // Add edge from source to destination with a certain weight
     void addEdge(int src, int dest, int weight = 1);
 
-    // Depth-First Search: example implementation
+    void bfs(int v);
+
     void dfs(int v);
 
-    // Breadth-First Search: example implementation
-    void bfs(int v);
+    // ----- Functions to implement in this class -----
+    float dijkstra_distance(int a, int b);
+    list<int> dijkstra_path_dist(int a, int b);
+
+    void dijkstra_dist(int a);
+
+    int dijkstra_zone(int a, int b);
+
 
 };
 

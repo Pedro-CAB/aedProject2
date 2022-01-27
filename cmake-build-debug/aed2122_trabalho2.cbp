@@ -80,6 +80,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/Graph.cpp">
+			<Option target="aed2122_trabalho2"/>
+		</Unit>
 		<Unit filename="C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/Graph.h">
 			<Option target="aed2122_trabalho2"/>
 		</Unit>
@@ -93,6 +96,9 @@
 			<Option target="aed2122_trabalho2"/>
 		</Unit>
 		<Unit filename="C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/Menu.h">
+			<Option target="aed2122_trabalho2"/>
+		</Unit>
+		<Unit filename="C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/MinHeap.h">
 			<Option target="aed2122_trabalho2"/>
 		</Unit>
 		<Unit filename="C:/Users/Aulas FEUP/CLionProjects/aed2122_trabalho2/Stop.cpp">
