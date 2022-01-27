@@ -25,7 +25,7 @@ O programa deve verificar o Melhor Percurso segundo vários critérios diferente
 - O que passa em menos paragens
 - O que percorre menor distância
 - O que implica menos mudanças de autocarro/linha
-- O que passa muda menos vezes de zona
+- O que muda menos vezes de zona
 (...)
 
 ### Mudar de Autocarro
