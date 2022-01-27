@@ -80,6 +80,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="C:/Users/Utilizador/OneDrive/Documentos/aedProject2/Graph.cpp">
+			<Option target="aed2122_trabalho2"/>
+		</Unit>
 		<Unit filename="C:/Users/Utilizador/OneDrive/Documentos/aedProject2/Graph.h">
 			<Option target="aed2122_trabalho2"/>
 		</Unit>
@@ -87,6 +90,9 @@
 			<Option target="aed2122_trabalho2"/>
 		</Unit>
 		<Unit filename="C:/Users/Utilizador/OneDrive/Documentos/aedProject2/Line.h">
+			<Option target="aed2122_trabalho2"/>
+		</Unit>
+		<Unit filename="C:/Users/Utilizador/OneDrive/Documentos/aedProject2/MinHeap.h">
 			<Option target="aed2122_trabalho2"/>
 		</Unit>
 		<Unit filename="C:/Users/Utilizador/OneDrive/Documentos/aedProject2/Stop.cpp">

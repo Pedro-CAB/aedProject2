@@ -11,7 +11,7 @@
 
 using namespace std;
 
-Class Company{
+class Company{
 public:
     vector<Stop> stops;
     vector<Line> lines;
@@ -20,6 +20,4 @@ public:
         lines = {};
     }
 
-    //Getters
-    list<Stop>
 };
