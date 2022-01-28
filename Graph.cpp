@@ -10,10 +10,10 @@ Graph::Graph(int num, bool dir) : n(num), hasDir(dir), nodes(num+1) {
 }
 
 // Add edge from source to destination with a certain weight
-void Graph::addEdge(int src, int dest, int weight) {
+void Graph::addEdge(int src, int dest, Weight weight) {
     if (src<1 || src>n || dest<1 || dest>n) return;
-    nodes[src].adj.push_back({dest, weight});
-    if (!hasDir) nodes[dest].adj.push_back({src, weight});
+    nodes[src].adj.push_back({dest, "", weight});
+    if (!hasDir) nodes[dest].adj.push_back({src, "", weight});
 }
 
 // Depth-First Search: example implementation
@@ -85,7 +85,7 @@ void Graph::dijkstra_dist(int s) {
         nodes[u].visited = true;
         for (auto e : nodes[u].adj) {
             int v = e.dest;
-            int w = e.weight;
+            int w = e.weight.dist;
             if (!nodes[v].visited && nodes[u].dist + w < nodes[v].dist) {
                 nodes[v].dist = nodes[u].dist + w;
                 q.decreaseKey(v, nodes[v].dist);
@@ -95,34 +95,28 @@ void Graph::dijkstra_dist(int s) {
     }
 }
 
-/*
-// Another version of Dijkstra in O(|E| log |V|) using only STL and sets
-void Graph::dijkstra(int s) {
-    set<pair<int, int>> q;
+void Graph::dijkstra_zone_change(int s){
+    MinHeap<int, int> q(n, -1);
     for (int v=1; v<=n; v++) {
         nodes[v].dist = INF;
-        q.insert({INF, v});
+        q.insert(v, INF);
         nodes[v].visited = false;
     }
     nodes[s].dist = 0;
-    q.erase({INF, s});
-    q.insert({0, s});
+    q.decreaseKey(s, 0);
     nodes[s].pred = s;
-    while (q.size()>0) {
-        int u = q.begin()->second;
-        q.erase(q.begin());
+    while (q.getSize()>0) {
+        int u = q.removeMin();
         // cout << "Node " << u << " with dist = " << nodes[u].dist << endl;
         nodes[u].visited = true;
         for (auto e : nodes[u].adj) {
             int v = e.dest;
-            int w = e.weight;
+            int w = e.weight.zone_change;
             if (!nodes[v].visited && nodes[u].dist + w < nodes[v].dist) {
-                q.erase({nodes[v].dist, v});
                 nodes[v].dist = nodes[u].dist + w;
+                q.decreaseKey(v, nodes[v].dist);
                 nodes[v].pred = u;
-                q.insert({nodes[v].dist, v});
             }
         }
     }
 }
-*/
