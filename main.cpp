@@ -1,11 +1,8 @@
 #include <iostream>
-#include <fstream>
-#include <sstream>
 #include <vector>
 #include "Line.h"
 #include "Menu.h"
 #include "Graph.h"
-#include <map>
 
 using namespace ::std;
 
