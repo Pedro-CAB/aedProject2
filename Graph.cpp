@@ -10,10 +10,15 @@ Graph::Graph(int num, bool dir) : n(num), hasDir(dir), nodes(num+1) {
 }
 
 // Add edge from source to destination with a certain weight
-void Graph::addEdge(int src, int dest, Weight weight) {
+void Graph::addEdge(int src, int dest, Weight weight, string line) {
     if (src<1 || src>n || dest<1 || dest>n) return;
-    nodes[src].adj.push_back({dest, "", weight});
-    if (!hasDir) nodes[dest].adj.push_back({src, "", weight});
+    nodes[src].adj.push_back({dest, line, weight});
+    if (!hasDir) nodes[dest].adj.push_back({src, line, weight});
+}
+
+void Graph::addNode(int src, string name, string zone){
+    nodes[src].name = name;
+    nodes[src].zone = zone;
 }
 
 // Depth-First Search: example implementation

@@ -6,6 +6,7 @@
 #define AED2122_TRABALHO2_COMPANY_H
 #include "Line.h"
 #include "Stop.h"
+#include "Graph.h"
 #include <list>
 #include <map>
 #include <iostream>
@@ -20,9 +21,10 @@ class Menu{
 public:
     vector<Stop> stops;
     vector<Line> lines;
-    map<string,int> stopIDs;
-    map<string,int> lineIDs;
+    map<string, int> stopIDs;
+    map<string, int> lineIDs;
     bool on = true;
+    Graph graph;
     Menu();
 
     //Adicionar Valores aos Maps
@@ -39,6 +41,9 @@ public:
     void path_choice();
     void path_choiceInput();
 
+    float distance(Stop stop1, Stop stop2);
+    int zoneChange(Stop stop1, Stop stop2);
+    void addEdges(Stop stop);
 
     //Leitura de Files
     void readFiles();

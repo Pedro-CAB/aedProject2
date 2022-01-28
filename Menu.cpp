@@ -2,13 +2,13 @@
 // Created by Aulas FEUP on 27/01/2022.
 //
 #include "Menu.h"
+#include <cmath>
 
 using namespace::std;
 
-Menu::Menu() {
+Menu::Menu():graph(2487, true) {
     readFiles();
 }
-
 
 //Funções Auxiliares ===============================================================================
 bool Menu::isFloat(string str) {
@@ -86,6 +86,56 @@ void Menu::checkZeroInput(string input){
     }
 }
 
+float Menu::distance(Stop stop1, Stop stop2){
+    double dLat = (stop2.lat - stop1.lat) * M_PI / 180.0;
+    double dLon = (stop2.lon - stop1.lon) * M_PI / 180.0;
+
+    // convert to radians
+    stop1.lat = (stop1.lat) * M_PI / 180.0;
+    stop2.lat = (stop2.lat) * M_PI / 180.0;
+
+    // apply formulae
+    double a = pow(sin(dLat / 2), 2) + pow(sin(dLon / 2), 2) * cos(stop1.lat) * cos(stop2.lat);
+    double rad = 6371;
+    double c = 2 * asin(sqrt(a));
+    return rad * c;
+}
+
+int Menu::zoneChange(Stop stop1, Stop stop2){
+    if (stop1.zone != stop2.zone)
+        return 1;
+    return 0;
+}
+
+void Menu::addEdges(Stop stop){
+    int scr, dest, it_pred, it_next, zone_c;
+    float dist;
+
+    for (auto line : lines){
+        for(int it = 0; it < line.itinerary.size() ; it++){
+            if(line.itinerary.at(it).code == stop.code){
+                it_pred = it--;
+                it_next = it++;
+
+                scr = stopIDs[stop.name];
+                dest = stopIDs[line.itinerary.at(it_next).name];
+                dist = distance(line.itinerary.at(it), line.itinerary.at(it_next));
+                zone_c = zoneChange(line.itinerary.at(it), line.itinerary.at(it_next));
+
+                graph.addEdge(scr, dest, {dist, zone_c}, line.name);
+
+                if (line.code < "300" || line.code > "303"){
+                    scr = stopIDs[stop.name];
+                    dest = stopIDs[line.itinerary.at(it_pred).name];
+                    dist = distance(line.itinerary.at(it), line.itinerary.at(it_pred));
+                    zone_c = zoneChange(line.itinerary.at(it), line.itinerary.at(it_pred));
+
+                    graph.addEdge(scr, dest, {dist, zone_c}, line.name);
+                }
+            }
+        }
+    }
+}
 
 //Leitura de Ficheiros ================================================================================
 void Menu::readFiles() {
@@ -124,6 +174,9 @@ void Menu::readStops() {
             if (id > 0) {
                 stopIDs.insert({stop.code, id});
             }
+
+            graph.addNode(id, name, zone);
+
             id++;
         }
     }

@@ -8,9 +8,9 @@
 #include <vector>
 #include <map>
 #include <list>
+#include <algorithm>
 #include <queue>
 #include <iostream>
-
 #include "minHeap.h"
 #include <vector>
 #include <list>
@@ -50,8 +50,12 @@ public:
     // Constructor: nr nodes and direction (default: undirected)
     Graph(int nodes, bool dir = false);
 
+    Graph();
+
     // Add edge from source to destination with a certain weight
-    void addEdge(int src, int dest, Weight weight);
+    void addEdge(int src, int dest, Weight weight, string line);
+
+    void addNode(int src, string name, string zone);
 
     void bfs(int v);
 
