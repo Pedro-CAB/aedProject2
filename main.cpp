@@ -8,7 +8,9 @@ using namespace ::std;
 
 int main() {
     Menu m = Menu();
+    /*
     if(m.menu_intro()){
         return 0;
-    }
+    }*/
+
 }

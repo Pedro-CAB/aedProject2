@@ -25,6 +25,8 @@ public:
     vector<Line> lines;
     map<string, int> stopIDs;
     map<string, int> lineIDs;
+    map<int, string> stopName;
+    map<int, string> lineName;
     bool on = true;
     Graph graph;
     Menu();

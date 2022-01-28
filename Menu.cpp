@@ -184,6 +184,7 @@ void Menu::readStops() {
             stops.push_back(stop);
             if (id > 0) {
                 stopIDs.insert({stop.code, id});
+                stopName.insert({id, stop.name});
             }
 
             graph.addNode(id, name, zone);
@@ -241,6 +242,7 @@ void Menu::readLines() {
             lines.push_back(l);
             if (id > 0) {
                 lineIDs.insert({l.code, id});
+                lineName.insert({id, l.name});
             }
             id++;
         }
