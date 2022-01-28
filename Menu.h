@@ -6,7 +6,9 @@
 #define AED2122_TRABALHO2_COMPANY_H
 #include "Line.h"
 #include "Stop.h"
+
 #include "Graph.h"
+#include "StopPair.h"
 #include <list>
 #include <map>
 #include <iostream>
@@ -27,19 +29,15 @@ public:
     Graph graph;
     Menu();
 
-    //Adicionar Valores aos Maps
-    void addStop();
-    void addLine();
-
     //Displays do Menu
     bool menu_intro();
     void stop_options();
     void stop_optionsDisplay();
     void coord_input();
     void stop_input();
-    void invalid_Input();
-    void path_choice();
-    void path_choiceInput();
+    static void invalid_Input();
+    void path_choice(const StopPair &p);
+    void path_choiceInput(const StopPair &p);
 
     float distance(Stop stop1, Stop stop2);
     int zoneChange(Stop stop1, Stop stop2);
@@ -49,15 +47,16 @@ public:
     void readFiles();
     void readLines();
     void readStops();
-    void createMaps();
-    vector<Stop> getLine(string lineName, string dir, vector<Stop> &stops);
+    vector<Stop> getLine(string lineName, const string &dir, const vector<Stop> &stops);
 
     //Auxiliares
-    bool isFloat(string str);
-    bool isInt (string str);
-    bool stopExists(string name);
+    static bool isFloat(const string &str);
+    static bool isInt (const string &str);
+    bool stopExists(const string &name);
     int intInputCheck();
     float floatInputCheck();
     string checkStopInput();
-    void checkZeroInput(string str);
+    bool checkZeroInput(const string &str);
+    static StopPair createStopPair1(string origin, string destination);
+    static StopPair createStopPair2(float latO, float lonO, float latD, float lonD);
 };
