@@ -11,24 +11,23 @@ Menu::Menu() {
 
 
 //Funções Auxiliares ===============================================================================
-bool Menu::isFloat(string str) {
+bool Menu::isFloat(const string &str){
     istringstream iss(str);
     float f;
     iss >> noskipws >> f;
     return iss.eof() && !iss.fail();
 }
-bool Menu::isInt(string str){
+ bool Menu::isInt(const string &str){
     istringstream iss(str);
     int i;
     iss >> noskipws >> i;
     return iss.eof() && !iss.fail();
 }
-bool Menu::stopExists(string code){
-    for (Stop s : stops){
+bool Menu::stopExists(const string &code){
+    for (const Stop &s : stops){
         if(s.code == code){
             return true;
         }
-        cout << s.code<< " ";
     }
     return false;
 }
@@ -80,10 +79,22 @@ void Menu::invalid_Input(){
     cout << "Input Invalido. Por favor, tente novamente."<<endl;
     cin.clear();
 }
-void Menu::checkZeroInput(string input){
+bool Menu::checkZeroInput(const string &input){
     if (input == "0"){
         menu_intro();
+        return true;
     }
+    return false;
+}
+StopPair Menu::createStopPair1(string origin, string destination){
+    StopPair p;
+    p.type = 1, p.origin = origin, p.destination = destination, p.latO = 0, p.lonO = 0,p.latD = 0, p.lonD = 0;
+    return p;
+}
+StopPair Menu::createStopPair2(float latO, float lonO, float latD, float lonD){
+    StopPair p;
+    p.type = 2, p.origin = "", p.destination = "", p.latO = latO, p.lonO = lonO,p.latD = latD, p.lonD = lonD;
+    return p;
 }
 
 
@@ -131,7 +142,7 @@ void Menu::readStops() {
     fileReader.close();
 }
 
-vector<Stop> Menu::getLine(string lineName, string dir, vector<Stop> &stops) {
+vector<Stop> Menu::getLine(string lineName, const string &dir, const vector<Stop> &stops) {
     lineName.append(dir);
     //Leitura das paragens
     ifstream fileReader;
@@ -142,7 +153,7 @@ vector<Stop> Menu::getLine(string lineName, string dir, vector<Stop> &stops) {
         getline(fileReader, dummy);
         while (!fileReader.eof()) {
             getline(fileReader, stopCode);
-            for (Stop stop: stops) {
+            for (const Stop &stop: stops) {
                 if (stop.code == stopCode) {
                     itinerary.push_back(stop);
                     break;
@@ -232,19 +243,21 @@ void Menu::stop_options() {
     }
 }
 void Menu::coord_input() {
-    int lat, lon;
+    float latO, lonO, latD, lonD;
     string destination;
     cout << "Insira a sua latitude atual:" << endl;
     cout << "(Pressione 0 para voltar ao menu)" << endl;
-    lat = floatInputCheck();
+    latO = floatInputCheck();
     cout << "Insira a sua longitude atual:" <<endl;
     cout << "(Pressione 0 para voltar ao menu)"<<endl;
-    lon = floatInputCheck();
-    cout << "Insira o codigo da paragem de destino:"<<endl;
+    lonO = floatInputCheck();
+    cout << "Insira a latitude do seu destino:" << endl;
+    cout << "(Pressione 0 para voltar ao menu)" << endl;
+    latD = floatInputCheck();
+    cout << "Insira a longitude do seu destino:" <<endl;
     cout << "(Pressione 0 para voltar ao menu)"<<endl;
-    destination = checkStopInput();
-    cout << "==PLACEHOLDER=="<<endl;
-    cout << "Latitude = " << lat << " Longitude = "<< lon<< endl << "Destino: "<< destination;
+    lonD = floatInputCheck();
+    path_choice(createStopPair2(latO,lonO,latD,lonD));
 }
 void Menu::stop_input(){
     string origin, destination;
@@ -252,47 +265,129 @@ void Menu::stop_input(){
     origin = checkStopInput();
     cout << "Insira o codigo da paragem de destino abaixo:"<<endl;
     destination = checkStopInput();
-    cout << "==PLACEHOLDER=="<<endl;
-    cout << "Partida: "<< origin << endl << "Destino: "<< destination;
+    path_choice(createStopPair1(origin,destination));
+
 }
-void Menu::path_choice(){
+void Menu::path_choice(const StopPair &p){
     cout << "Escolha o criterio para obtencao do trajeto:"<<endl;
     cout << "A)O que fizer menos paragens."<<endl;
     cout << "B)O que percorre menor distancia."<<endl;
     cout << "C)O que muda menos vezes de autocarro/linha."<<endl;
     cout << "D)O que muda menos vezes de zona."<<endl;
     cout << "Pressione 0 para regressar ao menu principal"<<endl;
+    path_choiceInput(p);
 }
-void Menu::path_choiceInput(){
+void Menu::path_choiceInput(const StopPair &p){
     string choice;
     bool loop = true;
     getline(cin, choice);
     checkZeroInput(choice);
+    string input;
     while(loop) {
         switch (choice.at(0)) {
             case 'A':
             case 'a':
                 loop = false;
-                cout << "==PLACEHOLDER" << endl;
-                cout << "Indica caminho com menos paragens" << endl;
+                if (p.type == 1){
+                    cout << "==PLACEHOLDER==" << endl;
+                    cout << "Indica caminho com menos paragens entre a paragem " << p.origin <<endl
+                        <<" e a paragem "<<p.destination<<endl;
+                    cout << "Insira 0 para voltar ao menu principal"<<endl;
+                    while(!checkZeroInput(input)){
+                        cin.clear();
+                        getline(cin,input);
+                        invalid_Input();
+                    }
+                }
+                else{
+                    cout << "==PLACEHOLDER==" << endl;
+                    cout << "Indica caminho com menos paragens entre as coordenadas (" << p.latO << ", " << p.lonO << ")"<< endl
+                        <<" e as coordenadas ( "<< p.latD << ", "<< p.lonD<< ")"<<endl;
+                    cout << "Insira 0 para voltar ao menu principal"<<endl;
+                    while(!checkZeroInput(input)){
+                        cin.clear();
+                        getline(cin,input);
+                        invalid_Input();
+                    }
+                }
                 break;
             case 'B':
             case 'b':
                 loop = false;
-                cout << "==PLACEHOLDER" << endl;
-                cout << "Indica caminho que percorre menor distância" << endl;
+                if (p.type == 1){
+                    cout << "==PLACEHOLDER==" << endl;
+                    cout << "Indica caminho que percorre menor distancia entre a paragem " << p.origin <<endl
+                         <<" e a paragem "<<p.destination<<endl;
+                    cout << "Insira 0 para voltar ao menu principal"<<endl;
+                    while(!checkZeroInput(input)){
+                        cin.clear();
+                        getline(cin,input);
+                        invalid_Input();
+                    }
+                }
+                else{
+                    cout << "==PLACEHOLDER==" << endl;
+                    cout << "Indica caminho que percorre menor distancia entre as coordenadas (" << p.latO << ", " << p.lonO << ")"<< endl
+                         <<" e as coordenadas ( "<< p.latD << ", "<< p.lonD<< ")"<<endl;
+                    cout << "Insira 0 para voltar ao menu principal"<<endl;
+                    while(!checkZeroInput(input)){
+                        cin.clear();
+                        getline(cin,input);
+                        invalid_Input();
+                    }
+                }
                 break;
             case 'C':
             case 'c':
                 loop = false;
-                cout << "==PLACEHOLDER" << endl;
-                cout << "Indica caminho com menos mudanças de linha" << endl;
+                if (p.type == 1){
+                    cout << "==PLACEHOLDER==" << endl;
+                    cout << "Indica caminho com menos mudancas de linha entre a paragem " << p.origin <<endl
+                         <<" e a paragem "<<p.destination<<endl;
+                    cout << "Insira 0 para voltar ao menu principal"<<endl;
+                    while(!checkZeroInput(input)){
+                        cin.clear();
+                        getline(cin,input);
+                        invalid_Input();
+                    }
+                }
+                else{
+                    cout << "==PLACEHOLDER==" << endl;
+                    cout << "Indica caminho com menos mudancas de linha entre as coordenadas (" << p.latO << ", " << p.lonO << ")"<< endl
+                         <<" e as coordenadas ( "<< p.latD << ", "<< p.lonD<< ")"<<endl;
+                    cout << "Insira 0 para voltar ao menu principal"<<endl;
+                    while(!checkZeroInput(input)){
+                        cin.clear();
+                        getline(cin,input);
+                        invalid_Input();
+                    }
+                }
                 break;
             case 'D':
             case 'd':
                 loop = false;
-                cout << "==PLACEHOLDER" << endl;
-                cout << "Indica caminho com menos mudanças de zona" << endl;
+                if (p.type == 1){
+                    cout << "==PLACEHOLDER==" << endl;
+                    cout << "Indica caminho com menos mudancas de zonaa entre a paragem " << p.origin <<endl
+                         <<" e a paragem "<<p.destination<<endl;
+                    cout << "Insira 0 para voltar ao menu principal"<<endl;
+                    while(!checkZeroInput(input)){
+                        cin.clear();
+                        getline(cin,input);
+                        invalid_Input();
+                    }
+                }
+                else{
+                    cout << "==PLACEHOLDER==" << endl;
+                    cout << "Indica caminho com menos mudancas de zona entre as coordenadas (" << p.latO << ", " << p.lonO << ")"<< endl
+                         <<" e as coordenadas ( "<< p.latD << ", "<< p.lonD<< ")"<<endl;
+                    cout << "Insira 0 para voltar ao menu principal"<<endl;
+                    while(!checkZeroInput(input)){
+                        cin.clear();
+                        getline(cin,input);
+                        invalid_Input();
+                    }
+                }
                 break;
             default:
                 invalid_Input();
