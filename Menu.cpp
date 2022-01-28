@@ -79,7 +79,6 @@ string Menu::checkStopInput(){
 void Menu::invalid_Input(){
     cout << "Input Invalido. Por favor, tente novamente."<<endl;
     cin.clear();
-    cin.ignore();
 }
 void Menu::checkZeroInput(string input){
     if (input == "0"){
@@ -206,28 +205,30 @@ void Menu::stop_optionsDisplay() {
     stop_options();
 }
 void Menu::stop_options() {
-    while(true) {
+    bool loop = true;
+    while(loop) {
         string option;
-        cin >> option;
+        getline(cin,option);
         switch(option.at(0)){
             case 'A':
             case 'a':
+                loop = false;
                 coord_input();
                 break;
             case 'B':
             case 'b':
+                loop = false;
                 stop_input();
                 break;
             case 'Q':
             case 'q':
+                loop = false;
                 on = false;
                 break;
             default:
                 invalid_Input();
-                stop_options();
                 break;
         }
-        break;
     }
 }
 void Menu::coord_input() {
@@ -264,27 +265,32 @@ void Menu::path_choice(){
 }
 void Menu::path_choiceInput(){
     string choice;
+    bool loop = true;
     getline(cin, choice);
     checkZeroInput(choice);
-    while(true) {
+    while(loop) {
         switch (choice.at(0)) {
             case 'A':
             case 'a':
+                loop = false;
                 cout << "==PLACEHOLDER" << endl;
                 cout << "Indica caminho com menos paragens" << endl;
                 break;
             case 'B':
             case 'b':
+                loop = false;
                 cout << "==PLACEHOLDER" << endl;
                 cout << "Indica caminho que percorre menor distância" << endl;
                 break;
             case 'C':
             case 'c':
+                loop = false;
                 cout << "==PLACEHOLDER" << endl;
                 cout << "Indica caminho com menos mudanças de linha" << endl;
                 break;
             case 'D':
             case 'd':
+                loop = false;
                 cout << "==PLACEHOLDER" << endl;
                 cout << "Indica caminho com menos mudanças de zona" << endl;
                 break;
