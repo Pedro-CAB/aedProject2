@@ -8,6 +8,9 @@ using namespace::std;
 
 Menu::Menu():graph(2487, true) {
     readFiles();
+    for (Stop s : stops){
+        addEdges(s);
+    }
 }
 
 //Funções Auxiliares ===============================================================================
@@ -154,6 +157,7 @@ void Menu::readFiles() {
     readLines();
     cout << "N Paragens no Vetor: "<< stops.size() << " N Linhas no Vetor: " << lines.size()<<endl;
     cout << "N Paragens no Map: "<< stopIDs.size() << " N Linhas no Mapa: " << lineIDs.size()<<endl;
+    cout << "N Paragens no Graph: "<< graph.nodes.size();
 }
 void Menu::readStops() {
     //Leitura das paragens
@@ -185,10 +189,8 @@ void Menu::readStops() {
             if (id > 0) {
                 stopIDs.insert({stop.code, id});
                 stopName.insert({id, stop.name});
+                graph.addNode(id, name, zone);
             }
-
-            graph.addNode(id, name, zone);
-
             id++;
         }
     }
