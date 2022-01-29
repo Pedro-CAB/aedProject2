@@ -11,6 +11,7 @@ Graph::Graph(int num, bool dir) : n(num), hasDir(dir), nodes(num+1) {
 
 // Add edge from source to destination with a certain weight
 void Graph::addEdge(int src, int dest, Weight weight, string line) {
+
     if (src<1 || src>n || dest<1 || dest>n) return;
     nodes[src].adj.push_back({dest, line, weight});
     if (!hasDir) nodes[dest].adj.push_back({src, line, weight});
@@ -32,16 +33,16 @@ void Graph::dfs(int v) {
     }
 }
 
-// Depth-First Search: example implementation
+// Depth-First Search
 void Graph::bfs(int v) {
-    for (int v=1; v<=n; v++) nodes[v].visited = false;
+    for (int i=1; i<=n; i++) nodes[i].visited = false;
     queue<int> q; // queue of unvisited nodes
     q.push(v);
     nodes[v].dist = 0;
     nodes[v].visited = true;
+
     while (!q.empty()) { // while there are still unvisited nodes
         int u = q.front(); q.pop();
-        cout << u << " "; // show node order
         for (auto e : nodes[u].adj) {
             int w = e.dest;
             if (!nodes[w].visited) {
@@ -52,6 +53,21 @@ void Graph::bfs(int v) {
             }
         }
     }
+}
+
+list<int> Graph::bfs_path(int v, int b){
+    bfs(v);
+    list<int> path;
+
+    path.push_back(b);
+    int i = b;
+    while (i != v) {
+        i = nodes[i].pred;
+        path.push_front(i);
+    }
+
+    cout << path.size();
+    return path;
 }
 
 float Graph::dijkstra_distance(int a, int b) {

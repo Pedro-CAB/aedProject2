@@ -58,6 +58,7 @@ public:
     void addNode(int src, string name, string zone);
 
     void bfs(int v);
+    list<int> bfs_path(int v, int b);
 
     void dfs(int v);
 

@@ -43,8 +43,9 @@ public:
 
     float distance(Stop stop1, Stop stop2);
     int zoneChange(Stop stop1, Stop stop2);
-    void addEdges(Stop stop);
+    void addEdges(Stop &stop);
 
+    list<string> convertPath(list<int> ids);
     //Leitura de Files
     void readFiles();
     void readLines();

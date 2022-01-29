@@ -11,6 +11,8 @@ Menu::Menu():graph(2487, true) {
     for (Stop s : stops){
         addEdges(s);
     }
+
+    cout << graph.nodes.at(1209).adj.size();
 }
 
 //Funções Auxiliares ===============================================================================
@@ -121,26 +123,25 @@ int Menu::zoneChange(Stop stop1, Stop stop2){
     return 0;
 }
 
-void Menu::addEdges(Stop stop){
+void Menu::addEdges(Stop &stop){
     int scr, dest, it_pred, it_next, zone_c;
     float dist;
-
     for (auto line : lines){
-        for(int it = 0; it < line.itinerary.size() ; it++){
+        for(int it = 1; it < line.itinerary.size()-1; it++){
             if(line.itinerary.at(it).code == stop.code){
                 it_pred = it--;
                 it_next = it++;
 
-                scr = stopIDs[stop.name];
-                dest = stopIDs[line.itinerary.at(it_next).name];
+                scr = stopIDs[stop.code];
+                dest = stopIDs[line.itinerary.at(it_next).code];
                 dist = distance(line.itinerary.at(it), line.itinerary.at(it_next));
                 zone_c = zoneChange(line.itinerary.at(it), line.itinerary.at(it_next));
 
                 graph.addEdge(scr, dest, {dist, zone_c}, line.name);
 
                 if (line.code < "300" || line.code > "303"){
-                    scr = stopIDs[stop.name];
-                    dest = stopIDs[line.itinerary.at(it_pred).name];
+                    scr = stopIDs[stop.code];
+                    dest = stopIDs[line.itinerary.at(it_pred).code];
                     dist = distance(line.itinerary.at(it), line.itinerary.at(it_pred));
                     zone_c = zoneChange(line.itinerary.at(it), line.itinerary.at(it_pred));
 
@@ -200,6 +201,7 @@ void Menu::readStops() {
 
 vector<Stop> Menu::getLine(string lineName, const string &dir, const vector<Stop> &stops) {
     lineName.append(dir);
+    lineName.append(".csv");
     //Leitura das paragens
     ifstream fileReader;
     fileReader.open(lineName);
@@ -235,7 +237,7 @@ void Menu::readLines() {
             getline(lineReader, code, ',');
             getline(lineReader, name, ',');
             Line l(code, name);
-            lineFile = "line_";
+            lineFile = "../resources/line_";
             lineFile.append(code);
             lineFile.append("_");
 
@@ -253,6 +255,14 @@ void Menu::readLines() {
     fileReader.close();
 }
 
+list<string> Menu::convertPath(list<int> ids) {
+    list<string> path;
+    for(auto i: ids){
+        path.push_back(stopName[i]);
+    }
+    return path;
+}
+
 //Funções do Menu =============================================================================================
 bool Menu::menu_intro() {
     if(on) {
@@ -261,9 +271,8 @@ bool Menu::menu_intro() {
         cout << "a opcao desejada de entre as abaixo:" << endl;
         stop_optionsDisplay();
     }
-    else{
-        return on;
-    }
+
+    return on;
 }
 void Menu::stop_optionsDisplay() {
     cout << "Como prefere inserir a localizacao de partida?"<<endl;
@@ -346,9 +355,9 @@ void Menu::path_choiceInput(const StopPair &p){
             case 'a':
                 loop = false;
                 if (p.type == 1){
-                    cout << "==PLACEHOLDER==" << endl;
-                    cout << "Indica caminho com menos paragens entre a paragem " << p.origin <<endl
-                        <<" e a paragem "<<p.destination<<endl;
+                    for(auto i : convertPath(graph.bfs_path(stopIDs[p.origin], stopIDs[p.destination]))){
+                        cout << i << " - ";
+                    }
                     cout << "Insira 0 para voltar ao menu principal"<<endl;
                     while(!checkZeroInput(input)){
                         cin.clear();
@@ -372,10 +381,12 @@ void Menu::path_choiceInput(const StopPair &p){
             case 'b':
                 loop = false;
                 if (p.type == 1){
-                    cout << "==PLACEHOLDER==" << endl;
-                    cout << "Indica caminho que percorre menor distancia entre a paragem " << p.origin <<endl
-                         <<" e a paragem "<<p.destination<<endl;
-                    cout << "Insira 0 para voltar ao menu principal"<<endl;
+
+                    for(auto i : convertPath(graph.dijkstra_path_dist(stopIDs[p.origin], stopIDs[p.destination]))){
+                        cout << i << " - ";
+                    }
+
+                    cout << endl << "Insira 0 para voltar ao menu principal"<<endl;
                     while(!checkZeroInput(input)){
                         cin.clear();
                         getline(cin,input);
