@@ -270,7 +270,6 @@ list<string> Menu::convertPath(list<int> ids) {
     for(auto i: ids){
         path.push_back(stopName[i]);
     }
-    cout <<endl<< path.size()<< endl;
     return path;
 }
 
@@ -361,14 +360,26 @@ void Menu::path_choiceInput(const StopPair &p){
     checkZeroInput(choice);
     string input;
     while(loop) {
+        int j = 0;
         switch (choice.at(0)) {
             case 'A':
             case 'a':
                 loop = false;
                 if (p.type == 1){
-                    for(auto i : convertPath(graph.bfs_path(stopIDs[p.origin], stopIDs[p.destination]))){
-                        cout << i << " - ";
+                    j = 0;
+                    for(const auto &i : convertPath(graph.bfs_path(stopIDs[p.origin], stopIDs[p.destination]))){
+                        if (j == 0){
+                            cout << "PARTIDA : " << i << endl;
+                        }
+                        else if (j>0 && j<convertPath(graph.bfs_path(stopIDs[p.origin], stopIDs[p.destination])).size()-1){
+                            cout <<"  ||==>" << i << endl;
+                        }
+                        else{
+                            cout <<"CHEGADA : "<< i << endl;
+                        }
+                        j++;
                     }
+                    cout << "Paragens : "<<graph.bfs_path(stopIDs[p.origin], stopIDs[p.destination]).size()<<endl;
                     cout << "Insira 0 para voltar ao menu principal"<<endl;
                     while(!checkZeroInput(input)){
                         cin.clear();
@@ -391,18 +402,25 @@ void Menu::path_choiceInput(const StopPair &p){
             case 'B':
             case 'b':
                 loop = false;
-                if (p.type == 1){
-
-                    for(auto i : convertPath(graph.dijkstra_path_dist(stopIDs[p.origin], stopIDs[p.destination]))){
-                        cout << i << " - ";
+                if (p.type == 1) {
+                    j = 0;
+                    for (const auto &i: convertPath(graph.bfs_path(stopIDs[p.origin], stopIDs[p.destination]))) {
+                        if (j == 0) {
+                            cout << "PARTIDA : " << i << endl;
+                        } else if (j > 0 && j < convertPath(
+                                graph.dijkstra_path_dist(stopIDs[p.origin], stopIDs[p.destination])).size() - 1) {
+                            cout << "  ||==>" << i << endl;
+                        } else {
+                            cout << "CHEGADA : " << i << endl;
+                        }
+                        j++;
                     }
-
-                    cout << endl << "Insira 0 para voltar ao menu principal"<<endl;
-                    while(!checkZeroInput(input)){
-                        cin.clear();
-                        getline(cin,input);
-                        invalid_Input();
-                    }
+                        cout << endl << "Insira 0 para voltar ao menu principal" << endl;
+                        while (!checkZeroInput(input)) {
+                            cin.clear();
+                            getline(cin, input);
+                            invalid_Input();
+                        }
                 }
                 else{
                     cout << "==PLACEHOLDER==" << endl;
@@ -446,7 +464,7 @@ void Menu::path_choiceInput(const StopPair &p){
             case 'd':
                 loop = false;
                 if (p.type == 1){
-                    for(auto i : convertPath(graph.dijkstra_path_zone(stopIDs[p.origin], stopIDs[p.destination]))){
+                    for(const auto &i : convertPath(graph.dijkstra_path_zone(stopIDs[p.origin], stopIDs[p.destination]))){
                         cout << i << " - ";
                     }
                     cout << "Insira 0 para voltar ao menu principal"<<endl;

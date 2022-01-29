@@ -67,7 +67,6 @@ list<int> Graph::bfs_path(int v, int b){
         path.push_front(i);
     }
 
-    cout << path.size();
     return path;
 }
 
@@ -80,7 +79,7 @@ float Graph::dijkstra_distance(int a, int b) {
 list<int> Graph::dijkstra_path_dist(int a, int b) {
     dijkstra_dist(a);
     list<int> path;
-    cout << " this happened!"<< endl;
+    //cout << " this happened!"<< endl;
     if (nodes[b].dist == INF) return path;
 
     path.push_back(b);
