@@ -47,12 +47,10 @@ class Graph {
     void dijkstra(int s);
 
 public:
-    // Constructor: nr nodes and direction (default: undirected)
     Graph(int nodes, bool dir = false);
 
     Graph();
 
-    // Add edge from source to destination with a certain weight
     void addEdge(int src, int dest, Weight weight, string line);
 
     void addNode(int src, string name, string zone);

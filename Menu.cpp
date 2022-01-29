@@ -15,6 +15,14 @@ Menu::Menu():graph(2487, true) {
 }
 
 //Funções Auxiliares ===============================================================================
+/**
+ * Esta função procura a paragem mais próxima das coordenadas fornecidas
+ * @param lat latitude
+ * @param lon longitude
+ * @return StopDist retorna uma estrutura que contem o código e a distância da paragem mais perto
+ *
+ * Complexidade temporal: O(n), sendo n o tamanho do vector stops
+ */
 StopDist Menu::coordToStop(float lat, float lon){
     string closestStop = "NULL";
     float minDist = INT_MAX;
@@ -124,7 +132,7 @@ float Menu::distance(Stop stop1, Stop stop2){
     return haversine(stop1.lat,stop1.lon,stop2.lat,stop2.lon);
 }
 
-/*
+/**
  * Esta função permite verificar se de uma paragem para outra se mudou de zona
  */
 int Menu::zoneChange(Stop stop1, Stop stop2){
@@ -133,12 +141,13 @@ int Menu::zoneChange(Stop stop1, Stop stop2){
     return 1;
 }
 
-/*
+/**
  * Esta função adiciona as arestas ao graph, no sentido direto e no sentido inverso (exceto das linhas
  * circulares, nesse caso só adiciona ao sentido direto)
+ * @param stop paragem à qual se vai adicionar as arestas ao graph
+ * @return
  *
- * Complexidade temporal: O(n^2), porque tem que percorrer o vector<Line> line e o vector<Stop> itinerary
- * que pertence a cada elemento de line
+ * Complexidade temporal: O(n^2), sendo n o tamanho do vector lines
  */
 void Menu::addEdges(Stop &stop){
     int scr, dest, it_pred, it_next, zone_c;
@@ -154,6 +163,11 @@ void Menu::addEdges(Stop &stop){
                     zone_c = zoneChange(line.itinerary.at(it), line.itinerary.at(it_next));
                     graph.addEdge(scr, dest, {dist, zone_c}, line.name);
                 }
+            } else if (distance(stop, line.itinerary.at(it)) < 100){
+                dest = stopIDs[line.itinerary.at(it).code];
+                dist = distance(stop, line.itinerary.at(it));
+                zone_c = zoneChange(line.itinerary.at(it), stop);
+                graph.addEdge(scr, dest, {dist, zone_c}, "walking");
             }
         }
         if (line.code < "300" || line.code > "303"){
@@ -169,6 +183,12 @@ void Menu::addEdges(Stop &stop){
                         graph.addEdge(scr, dest, {dist, zone_c}, line.name);
                     }
                 }
+                else if (distance(stop, line.itineraryReverse.at(it)) < 100) {
+                    dest = stopIDs[line.itineraryReverse.at(it).code];
+                    dist = distance(stop, line.itineraryReverse.at(it));
+                    zone_c = zoneChange(line.itineraryReverse.at(it), stop);
+                    graph.addEdge(scr, dest, {dist, zone_c}, "walking");
+                }
             }
         }
     }
@@ -180,7 +200,7 @@ void Menu::readFiles() {
     readLines();
 }
 
-/*
+/**
  * Esta função lê as paragens e guarda-as num objeto da classe Stop e adiciona a paragem ao graph
  */
 void Menu::readStops() {
@@ -211,6 +231,7 @@ void Menu::readStops() {
             stops.push_back(stop);
             if (id > 0) {
                 stopIDs.insert({stop.code, id});
+                stopCode.insert({id, stop.code});
                 stopName.insert({id, stop.name});
                 graph.addNode(id, name, zone);
             }
@@ -221,7 +242,7 @@ void Menu::readStops() {
     fileReader.close();
 }
 
-/*
+/**
  * Esta função lê os ficheiros de cada linha de autocarro e guarda-os num vector que pertencem à Line
  */
 vector<Stop> Menu::getLine(string lineName, const string &dir, const vector<Stop> &stops) {
@@ -246,7 +267,7 @@ vector<Stop> Menu::getLine(string lineName, const string &dir, const vector<Stop
     return itinerary;
 }
 
-/*
+/**
  * Esta função lê o ficheiro das linhas de autocarros e guarda-os nos objetos da classe Line
  */
 void Menu::readLines() {
@@ -272,7 +293,6 @@ void Menu::readLines() {
             lines.push_back(l);
             if (id > 0) {
                 lineIDs.insert({l.code, id});
-                lineName.insert({id, l.name});
             }
             id++;
         }
@@ -281,16 +301,18 @@ void Menu::readLines() {
     fileReader.close();
 }
 
-/*
- * Esta função retorna uma lista com o nome das estações de autocarros, a partir da lista de int que
+/**
+ * Esta função retorna uma lista com o nome das paragens de autocarros, a partir da lista de int que
  * representam os nós do graph
+ * @param ids lista com os identificadores dos nós do graph que pertencem ao caminho calculado
+ * @return list<StopNameCode> retorna uma lista que contem o nome e o código de cada paragem do caminho
  *
- * Complexidade temporal: O(n), porque percorremos todos os elementos da lista
+ * Complexidade temporal: O(n), sendo n o tamanho da lista ids
  */
-list<string> Menu::convertPath(list<int> ids) {
-    list<string> path;
+list<StopNameCode> Menu::convertPath(list<int> ids) {
+    list<StopNameCode> path;
     for(auto i: ids){
-        path.push_back(stopName[i]);
+        path.push_back({stopName[i],stopCode[i]});
     }
     return path;
 }
@@ -299,8 +321,8 @@ list<string> Menu::convertPath(list<int> ids) {
 bool Menu::menu_intro() {
     if(on) {
         cout << "======================== STCP Paragens ========================" << endl;
-        cout << "Bem vindo ao assistente de utilizacao das rede STCP! Selecione " << endl;
-        cout << "a opcao desejada de entre as abaixo:" << endl;
+        cout << "Bem vindo ao assistente de utilizacao das rede STCP!" << endl;
+        cout << "Selecione a opcao desejada de entre as abaixo:" << endl;
         stop_optionsDisplay();
     }
 
@@ -310,7 +332,7 @@ void Menu::stop_optionsDisplay() {
     byCoords = false;
     cout << "Como prefere inserir a localizacao de partida?"<<endl;
     cout << "A) Atraves das suas Coordenadas"<<endl;
-    cout << "B) Atraves do Nome da Paragem Escolhida"<<endl;
+    cout << "B) Atraves do Codigo da Paragem Escolhida"<<endl;
     cout << "Pressione Q para fechar o programa." << endl;
     stop_options();
 }
@@ -355,7 +377,6 @@ void Menu::coord_input() {
         if (coordToStop(latO, lonO).code != "NULL") {
             origin = coordToStop(latO, lonO).code;
             originDist = coordToStop(latO, lonO).dist;
-            //cout << "A paragem mais perto da sua localização é : " << origin << "A " << originDist << " metros" << endl;
             break;
         }
         else{
@@ -393,14 +414,13 @@ void Menu::path_choice(const StopPair &p){
     cout << "Escolha o criterio para obtencao do trajeto:"<<endl;
     cout << "A)O que fizer menos paragens."<<endl;
     cout << "B)O que percorre menor distancia."<<endl;
-    cout << "C)O que muda menos vezes de autocarro/linha."<<endl;
-    cout << "D)O que muda menos vezes de zona."<<endl;
+    cout << "C)O que muda menos vezes de zona."<<endl;
     cout << "Pressione 0 para regressar ao menu principal"<<endl;
     path_choiceInput(p);
 }
 void Menu::path_choiceInput(const StopPair &p){
     string choice;
-    list<string> path;
+    list<StopNameCode> path;
     bool loop = true;
     getline(cin, choice);
     checkZeroInput(choice);
@@ -418,13 +438,13 @@ void Menu::path_choiceInput(const StopPair &p){
                 }
                 for(const auto &i :path){
                     if (j == 0){
-                        cout << "PARTIDA : " << i << endl;
+                        cout << "PARTIDA : " << i.stop_name << " || " << i.stop_code << endl;
                     }
                     else if (j>0 && j<path.size()-1){
-                        cout <<"  ||==>" << i << endl;
+                        cout <<"  ||==> " << i.stop_name << " || " << i.stop_code << endl;
                     }
                     else{
-                        cout <<"CHEGADA : "<< i << endl;
+                        cout <<"CHEGADA : " << i.stop_name << " || " << i.stop_code << endl;
                     }
                     j++;
                 }
@@ -449,13 +469,13 @@ void Menu::path_choiceInput(const StopPair &p){
                 }
                 for(const auto &i :path){
                     if (j == 0){
-                        cout << "PARTIDA : " << i << endl;
+                        cout << "PARTIDA : " << i.stop_name << " || " << i.stop_code << endl;
                     }
                     else if (j>0 && j<path.size()-1){
-                        cout <<"  ||==>" << i << endl;
+                        cout <<"  ||==> " << i.stop_name << " || " << i.stop_code << endl;
                     }
                     else{
-                        cout <<"CHEGADA : "<< i << endl;
+                        cout <<"CHEGADA : "<< i.stop_name << " || " << i.stop_code << endl;
                     }
                     j++;
                 }
@@ -473,19 +493,6 @@ void Menu::path_choiceInput(const StopPair &p){
             case 'C':
             case 'c':
                 loop = false;
-                cout << "==PLACEHOLDER==" << endl;
-                cout << "Indica caminho com menos mudancas de linha entre a paragem " << p.origin <<endl
-                <<" e a paragem "<<p.destination<<endl;
-                cout << "Insira 0 para voltar ao menu principal"<<endl;
-                while(!checkZeroInput(input)){
-                    cin.clear();
-                    getline(cin,input);
-                    invalid_Input();
-                }
-                break;
-            case 'D':
-            case 'd':
-                loop = false;
                 j = 0;
                 path = convertPath(graph.dijkstra_path_zone(stopIDs[p.origin], stopIDs[p.destination]));
                 if (originDist > 0 && byCoords){
@@ -493,13 +500,13 @@ void Menu::path_choiceInput(const StopPair &p){
                 }
                 for(const auto &i :path){
                     if (j == 0){
-                        cout << "PARTIDA : " << i << endl;
+                        cout << "PARTIDA : " << i.stop_name << " || " << i.stop_code << endl;
                     }
                     else if (j>0 && j<path.size()-1){
-                        cout <<"  ||==>" << i << endl;
+                        cout <<"  ||==> " << i.stop_name << " || " << i.stop_code << endl;
                     }
                     else{
-                        cout <<"CHEGADA : "<< i << endl;
+                        cout <<"CHEGADA : "<< i.stop_name << " || " << i.stop_code << endl;
                     }
                     j++;
                 }

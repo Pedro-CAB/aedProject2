@@ -10,6 +10,7 @@
 #include "Graph.h"
 #include "StopPair.h"
 #include "StopDist.h"
+#include "StopNameCode.h"
 #include <list>
 #include <map>
 #include <iostream>
@@ -27,7 +28,7 @@ public:
     map<string, int> stopIDs;
     map<string, int> lineIDs;
     map<int, string> stopName;
-    map<int, string> lineName;
+    map<int, string> stopCode;
     bool on = true;
     bool byCoords = false;
     int originDist, destinationDist;
@@ -44,11 +45,6 @@ public:
     void path_choice(const StopPair &p);
     void path_choiceInput(const StopPair &p);
 
-    float distance(Stop stop1, Stop stop2);
-    int zoneChange(Stop stop1, Stop stop2);
-    void addEdges(Stop &stop);
-    list<string> convertPath(list<int> ids);
-    
     //Leitura de Files
     void readFiles();
     void readLines();
@@ -66,4 +62,8 @@ public:
     string checkStopInput();
     bool checkZeroInput(const string &str);
     static StopPair createStopPair(string origin, string destination);
+    float distance(Stop stop1, Stop stop2);
+    int zoneChange(Stop stop1, Stop stop2);
+    void addEdges(Stop &stop);
+    list<StopNameCode> convertPath(list<int> ids);
 };
