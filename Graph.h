@@ -61,13 +61,10 @@ public:
     list<int> bfs_path(int v, int b);
 
     void dfs(int v);
-
-    // ----- Functions to implement in this class -----
     float dijkstra_distance(int a, int b);
     list<int> dijkstra_path_dist(int a, int b);
     list<int> dijkstra_path_zone(int a, int b);
     void dijkstra_dist(int a);
-
     void dijkstra_zone_change(int s);
 
 };

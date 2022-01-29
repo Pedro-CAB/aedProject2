@@ -11,8 +11,6 @@ Menu::Menu():graph(2487, true) {
     for (Stop s : stops){
         addEdges(s);
     }
-
-    cout << graph.nodes.at(1209).adj.size();
 }
 
 //Funções Auxiliares ===============================================================================
@@ -38,7 +36,7 @@ float Menu::haversine(float lat1, float lon1, float lat2, float lon2){
     float a = pow(sin(dLat / 2), 2) + pow(sin(dLon / 2), 2) * cos(lat1) * cos(lat2);
     float rad = 6371;
     float c = 2 * asin(sqrt(a));
-    return rad * c * 1000;
+    return (rad * c) * 1000;
 }
 bool Menu::isFloat(const string &str){
     istringstream iss(str);
@@ -130,7 +128,6 @@ int Menu::zoneChange(Stop stop1, Stop stop2){
         return 100;
     return 1;
 }
-
 void Menu::addEdges(Stop &stop){
     int scr, dest, it_pred, it_next, zone_c;
     float dist;
