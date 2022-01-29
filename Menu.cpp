@@ -433,7 +433,7 @@ void Menu::path_choiceInput(const StopPair &p){
                     j++;
                 }
                 if (destinationDist > 0 && byCoords){
-                    cout << "Após sair da paragem, caminhe "<< destinationDist<< " metros."<<endl;
+                    cout << "Apos sair da paragem, caminhe "<< destinationDist<< " metros."<<endl;
                 }
                 cout << "Paragens : "<<path.size()<<endl;
                 cout << "Insira 0 para voltar ao menu principal"<<endl;
@@ -464,7 +464,7 @@ void Menu::path_choiceInput(const StopPair &p){
                     j++;
                 }
                 if (destinationDist > 0 && byCoords){
-                    cout << "Após sair da paragem, caminhe "<< destinationDist<< " metros."<<endl;
+                    cout << "Apos sair da paragem, caminhe "<< destinationDist<< " metros."<<endl;
                 }
                 cout << "Paragens : "<<path.size()<< " Distancia total : " << graph.nodes.at(stopIDs[p.destination]).dist<<endl ;
                 cout << endl << "Insira 0 para voltar ao menu principal" << endl;
@@ -508,7 +508,7 @@ void Menu::path_choiceInput(const StopPair &p){
                     j++;
                 }
                 if (destinationDist > 0 && byCoords){
-                    cout << "Após sair da paragem, caminhe "<< destinationDist<< " metros."<<endl;
+                    cout << "Apos sair da paragem, caminhe "<< destinationDist<< " metros."<<endl;
                 }
                 cout << "Paragens : "<<path.size()<< " Mudanças de zona : " << graph.nodes.at(stopIDs[p.destination]).dist<<endl ;
                 cout << "Insira 0 para voltar ao menu principal"<<endl;
