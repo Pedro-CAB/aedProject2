@@ -18,11 +18,11 @@ Menu::Menu():graph(2487, true) {
 //Funções Auxiliares ===============================================================================
 string Menu::coordToStop(float lat, float lon){
     string closestStop = "NULL";
-    float minDist = 0.06;
+    float minDist = INT_MAX;
     for (Stop s : stops){
         int lat2 = s.lat, lon2 = s.lon;
         float dist = haversine(lat,lon,lat2,lon2);
-        if (dist <= 0.05 && dist < minDist){
+        if (dist < 100 && dist < minDist){
             minDist = dist;
             closestStop = s.code;
         }
