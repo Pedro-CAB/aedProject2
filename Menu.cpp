@@ -38,7 +38,7 @@ float Menu::haversine(float lat1, float lon1, float lat2, float lon2){
     float a = pow(sin(dLat / 2), 2) + pow(sin(dLon / 2), 2) * cos(lat1) * cos(lat2);
     float rad = 6371;
     float c = 2 * asin(sqrt(a));
-    return rad * c;
+    return rad * c * 1000;
 }
 bool Menu::isFloat(const string &str){
     istringstream iss(str);
@@ -381,6 +381,7 @@ void Menu::path_choice(const StopPair &p){
 }
 void Menu::path_choiceInput(const StopPair &p){
     string choice;
+    list<string> path;
     bool loop = true;
     getline(cin, choice);
     checkZeroInput(choice);
@@ -392,11 +393,12 @@ void Menu::path_choiceInput(const StopPair &p){
             case 'a':
                 loop = false;
                 j = 0;
-                for(const auto &i : convertPath(graph.bfs_path(stopIDs[p.origin], stopIDs[p.destination]))){
+                path = convertPath(graph.bfs_path(stopIDs[p.origin], stopIDs[p.destination]));
+                for(const auto &i :path){
                     if (j == 0){
                         cout << "PARTIDA : " << i << endl;
                     }
-                    else if (j>0 && j<convertPath(graph.bfs_path(stopIDs[p.origin], stopIDs[p.destination])).size()-1){
+                    else if (j>0 && j<path.size()-1){
                         cout <<"  ||==>" << i << endl;
                     }
                     else{
@@ -404,7 +406,7 @@ void Menu::path_choiceInput(const StopPair &p){
                     }
                     j++;
                 }
-                cout << "Paragens : "<<graph.bfs_path(stopIDs[p.origin], stopIDs[p.destination]).size()<<endl;
+                cout << "Paragens : "<<path.size()<<endl;
                 cout << "Insira 0 para voltar ao menu principal"<<endl;
                 while(!checkZeroInput(input)){
                     cin.clear();
@@ -416,17 +418,20 @@ void Menu::path_choiceInput(const StopPair &p){
             case 'b':
                 loop = false;
                 j = 0;
-                for (const auto &i: convertPath(graph.bfs_path(stopIDs[p.origin], stopIDs[p.destination]))) {
-                    if (j == 0) {
+                path = convertPath(graph.dijkstra_path_dist(stopIDs[p.origin], stopIDs[p.destination]));
+                for(const auto &i :path){
+                    if (j == 0){
                         cout << "PARTIDA : " << i << endl;
-                    } else if (j > 0 && j < convertPath(
-                            graph.dijkstra_path_dist(stopIDs[p.origin], stopIDs[p.destination])).size() - 1) {
-                        cout << "  ||==>" << i << endl;
-                    } else {
-                        cout << "CHEGADA : " << i << endl;
+                    }
+                    else if (j>0 && j<path.size()-1){
+                        cout <<"  ||==>" << i << endl;
+                    }
+                    else{
+                        cout <<"CHEGADA : "<< i << endl;
                     }
                     j++;
                 }
+                cout << "Paragens : "<<path.size()<< " Distancia total : " << graph.nodes.at(stopIDs[p.destination]).dist<<endl ;
                 cout << endl << "Insira 0 para voltar ao menu principal" << endl;
                 while (!checkZeroInput(input)) {
                     cin.clear();
@@ -450,9 +455,21 @@ void Menu::path_choiceInput(const StopPair &p){
             case 'D':
             case 'd':
                 loop = false;
-                for(const auto &i : convertPath(graph.dijkstra_path_zone(stopIDs[p.origin], stopIDs[p.destination]))){
-                    cout << i << " - ";
+                j = 0;
+                path = convertPath(graph.dijkstra_path_zone(stopIDs[p.origin], stopIDs[p.destination]));
+                for(const auto &i :path){
+                    if (j == 0){
+                        cout << "PARTIDA : " << i << endl;
+                    }
+                    else if (j>0 && j<path.size()-1){
+                        cout <<"  ||==>" << i << endl;
+                    }
+                    else{
+                        cout <<"CHEGADA : "<< i << endl;
+                    }
+                    j++;
                 }
+                cout << "Paragens : "<<path.size()<< " Mudanças de zona : " << graph.nodes.at(stopIDs[p.destination]).dist<<endl ;
                 cout << "Insira 0 para voltar ao menu principal"<<endl;
                 while(!checkZeroInput(input)){
                     cin.clear();
