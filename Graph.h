@@ -26,13 +26,13 @@ class Graph {
     };
 
     struct Edge {
-        int dest;   // Destination node
+        int dest;
         string line;
         Weight weight;
     };
 
     struct Node {
-        list<Edge> adj; // The list of outgoing edges (to adjacent nodes)
+        list<Edge> adj;
         float dist;
         int pred;
         bool visited;
@@ -40,9 +40,9 @@ class Graph {
         string zone;
     };
 
-    int n;              // Graph size (vertices are numbered from 1 to n)
-    bool hasDir;        // false: undirect; true: directed
-    public: vector<Node> nodes; // The list of nodes being represented
+    int n;
+    bool hasDir;
+    public: vector<Node> nodes;
 
     void dijkstra(int s);
 

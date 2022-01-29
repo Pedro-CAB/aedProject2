@@ -18,6 +18,5 @@ int main() {
     if(m.menu_intro()){
         return 0;
     }
-    //cout << m.distance(m.stops[3], m.stops[4]) << " m";
 
 }

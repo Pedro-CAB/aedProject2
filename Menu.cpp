@@ -124,11 +124,19 @@ float Menu::distance(Stop stop1, Stop stop2){
     return haversine(stop1.lat,stop1.lon,stop2.lat,stop2.lon);
 }
 
+/*
+ * Esta função permite verificar se de uma paragem para outra se mudou de zona
+ */
 int Menu::zoneChange(Stop stop1, Stop stop2){
     if (stop1.zone != stop2.zone)
         return 100;
     return 1;
 }
+
+/*
+ * Esta função adiciona as arestas ao graph, no sentido direto e no sentido inverso (exceto das linhas
+ * circulares, nesse caso só adiciona ao sentido direto)
+ */
 void Menu::addEdges(Stop &stop){
     int scr, dest, it_pred, it_next, zone_c;
     float dist;
@@ -172,12 +180,15 @@ void Menu::addEdges(Stop &stop){
 void Menu::readFiles() {
     readStops();
     readLines();
-    cout << "N Paragens no Vetor: "<< stops.size() << " N Linhas no Vetor: " << lines.size()<<endl;
-    cout << "N Paragens no Map: "<< stopIDs.size() << " N Linhas no Mapa: " << lineIDs.size()<<endl;
-    cout << "N Paragens no Graph: "<< graph.nodes.size();
+    //cout << "N Paragens no Vetor: "<< stops.size() << " N Linhas no Vetor: " << lines.size()<<endl;
+    //cout << "N Paragens no Map: "<< stopIDs.size() << " N Linhas no Mapa: " << lineIDs.size()<<endl;
+    //cout << "N Paragens no Graph: "<< graph.nodes.size();
 }
+
+/*
+ * Esta função lê as paragens e guarda-as num objeto da classe Stop e adiciona a paragem ao graph
+ */
 void Menu::readStops() {
-    //Leitura das paragens
     ifstream fileReader;
     fileReader.open("../resources/stops.csv");
     if (fileReader.is_open()) {
@@ -215,10 +226,12 @@ void Menu::readStops() {
     fileReader.close();
 }
 
+/*
+ * Esta função lê os ficheiros de cada linha de autocarro e guarda-os num vector que pertencem à Line
+ */
 vector<Stop> Menu::getLine(string lineName, const string &dir, const vector<Stop> &stops) {
     lineName.append(dir);
     lineName.append(".csv");
-    //Leitura das paragens
     ifstream fileReader;
     fileReader.open(lineName);
     vector<Stop> itinerary;
@@ -238,8 +251,10 @@ vector<Stop> Menu::getLine(string lineName, const string &dir, const vector<Stop
     return itinerary;
 }
 
+/*
+ * Esta função lê o ficheiro das linhas de autocarros e guarda-os nos objetos da classe Line
+ */
 void Menu::readLines() {
-    //Leitura das paragens
     ifstream fileReader;
     fileReader.open("../resources/lines.csv");
     if (fileReader.is_open()) {
@@ -271,6 +286,10 @@ void Menu::readLines() {
     fileReader.close();
 }
 
+/*
+ * Esta função retorna uma lista com o nome das estações de autocarros, a partir da lista de int que
+ * representam os nós do graph
+ */
 list<string> Menu::convertPath(list<int> ids) {
     list<string> path;
     for(auto i: ids){

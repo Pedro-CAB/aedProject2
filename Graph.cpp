@@ -23,9 +23,8 @@ void Graph::addNode(int src, string name, string zone){
     nodes[src].zone = zone;
 }
 
-// Depth-First Search: example implementation
+// Depth-First Search
 void Graph::dfs(int v) {
-    cout << v << " "; // show node order
     nodes[v].visited = true;
     for (auto e : nodes[v].adj) {
         int w = e.dest;
@@ -34,15 +33,18 @@ void Graph::dfs(int v) {
     }
 }
 
-// Depth-First Search
+/*
+ * Esta função permite fazer a pesquisa em largura no graph, pelo que permite aceder ao menor número
+ * de paragens em que o utilizador tem que passar para chegar ao destino
+ */
 void Graph::bfs(int v) {
     for (int i=0; i<=n; i++) nodes[i].visited = false;
-    queue<int> q; // queue of unvisited nodes
+    queue<int> q;
     q.push(v);
     nodes[v].dist = 0;
     nodes[v].visited = true;
 
-    while (!q.empty()) { // while there are still unvisited nodes
+    while (!q.empty()) {
         int u = q.front(); q.pop();
         for (auto e : nodes[u].adj) {
             int w = e.dest;
@@ -56,6 +58,9 @@ void Graph::bfs(int v) {
     }
 }
 
+/*
+ * Esta função guarda o caminho do nó inicial até ao final de acordo com o número de paragens
+ */
 list<int> Graph::bfs_path(int v, int b){
     bfs(v);
     list<int> path;
@@ -70,16 +75,21 @@ list<int> Graph::bfs_path(int v, int b){
     return path;
 }
 
+/*
+ * Esta função retorna a distância entre o nó inicial e o final
+ */
 float Graph::dijkstra_distance(int a, int b) {
     dijkstra_dist(a);
     if (nodes[b].dist == INF) return -1;
     return nodes[b].dist;
 }
 
+/*
+ * Esta função retorna o caminho entre o nó inicial e final
+ */
 list<int> Graph::dijkstra_path_dist(int a, int b) {
     dijkstra_dist(a);
     list<int> path;
-    //cout << " this happened!"<< endl;
     if (nodes[b].dist == INF) return path;
 
     path.push_back(b);
@@ -91,6 +101,10 @@ list<int> Graph::dijkstra_path_dist(int a, int b) {
     return path;
 }
 
+/*
+ * Esta função retorna o caminho entre o nó inicial e o final de acordo com o menor número de vezes
+ * em que há mudança de zona
+ */
 list<int> Graph::dijkstra_path_zone(int a, int b) {
     dijkstra_zone_change(a);
     list<int> path;
@@ -107,6 +121,9 @@ list<int> Graph::dijkstra_path_zone(int a, int b) {
 }
 
 // Dijkstra in O(|E| log |V|) using only the MinHeap that was given to you
+/*
+ * Esta função calcula a menor distância entre os nós do graph
+ */
 void Graph::dijkstra_dist(int s) {
     MinHeap<int, int> q(n, -1);
     for (int v=0; v<=n; v++) {
@@ -119,10 +136,6 @@ void Graph::dijkstra_dist(int s) {
     nodes[s].pred = s;
     while (q.getSize()>0) {
         int u = q.removeMin();
-        /*if (nodes[u].dist == INF) {
-            cout << "Stop " << u << " with dist = " << nodes[u].dist << endl;
-        }
-        cout << nodes[u].adj.size() <<endl;*/
         nodes[u].visited = true;
         for (auto e : nodes[u].adj) {
             int v = e.dest;
@@ -137,6 +150,9 @@ void Graph::dijkstra_dist(int s) {
     }
 }
 
+/*
+ * Esta função calcula o menor número de vezes que se muda de zona entre todos os nós
+ */
 void Graph::dijkstra_zone_change(int s){
     MinHeap<int, int> q(n, -1);
     for (int v=0; v<=n; v++) {
