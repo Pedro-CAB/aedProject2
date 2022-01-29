@@ -114,42 +114,52 @@ float Menu::distance(Stop stop1, Stop stop2){
     double a = pow(sin(dLat / 2), 2) + pow(sin(dLon / 2), 2) * cos(stop1.lat) * cos(stop2.lat);
     double rad = 6371;
     double c = 2 * asin(sqrt(a));
-    return rad * c;
+    return rad * c *1000;
 }
 
 int Menu::zoneChange(Stop stop1, Stop stop2){
     if (stop1.zone != stop2.zone)
-        return 1;
-    return 0;
+        return 100;
+    return 1;
 }
 
 void Menu::addEdges(Stop &stop){
     int scr, dest, it_pred, it_next, zone_c;
     float dist;
+    scr = stopIDs[stop.code];
     for (auto line : lines){
-        for(int it = 1; it < line.itinerary.size()-1; it++){
-            if(line.itinerary.at(it).code == stop.code){
-                it_pred = it--;
-                it_next = it++;
-
-                scr = stopIDs[stop.code];
-                dest = stopIDs[line.itinerary.at(it_next).code];
-                dist = distance(line.itinerary.at(it), line.itinerary.at(it_next));
-                zone_c = zoneChange(line.itinerary.at(it), line.itinerary.at(it_next));
-
-                graph.addEdge(scr, dest, {dist, zone_c}, line.name);
-
-                if (line.code < "300" || line.code > "303"){
-                    scr = stopIDs[stop.code];
-                    dest = stopIDs[line.itinerary.at(it_pred).code];
-                    dist = distance(line.itinerary.at(it), line.itinerary.at(it_pred));
-                    zone_c = zoneChange(line.itinerary.at(it), line.itinerary.at(it_pred));
-
+        for(int it = 0; it < line.itinerary.size(); it++) {
+            if (line.itinerary.at(it).code == stop.code) {
+                it_next = it + 1;
+                //cout << line.code<< " " << it_pred << " " << it_next << " ";
+                if (it < line.itinerary.size() - 1) {
+                    dest = stopIDs[line.itinerary.at(it_next).code];
+                    //cout << dest <<" ";
+                    dist = distance(line.itinerary.at(it), line.itinerary.at(it_next));
+                    zone_c = zoneChange(line.itinerary.at(it), line.itinerary.at(it_next));
+                    //cout << line.itinerary.at(it_next).code << " " << dist << " " << zone_c;
                     graph.addEdge(scr, dest, {dist, zone_c}, line.name);
                 }
             }
         }
+        if (line.code < "300" || line.code > "303"){
+            for(int it = 0; it < line.itineraryReverse.size(); it++) {
+                if (line.itineraryReverse.at(it).code == stop.code) {
+                    it_next = it + 1;
+                    //cout << line.code<< " " << it_pred << " " << it_next << " ";
+                    if (it < line.itineraryReverse.size() - 1) {
+                        dest = stopIDs[line.itineraryReverse.at(it_next).code];
+                        //cout << dest <<" ";
+                        dist = distance(line.itineraryReverse.at(it), line.itineraryReverse.at(it_next));
+                        zone_c = zoneChange(line.itineraryReverse.at(it), line.itineraryReverse.at(it_next));
+                        graph.addEdge(scr, dest, {dist, zone_c}, line.name);
+                    }
+                }
+            }
+        }
     }
+    if (graph.nodes.at(scr).adj.size() == 0)
+        cout <<stop.code << " " << scr << " " << graph.nodes.at(scr).adj.size() << endl;
 }
 
 //Leitura de Ficheiros ================================================================================
@@ -260,6 +270,7 @@ list<string> Menu::convertPath(list<int> ids) {
     for(auto i: ids){
         path.push_back(stopName[i]);
     }
+    cout <<endl<< path.size()<< endl;
     return path;
 }
 
@@ -435,9 +446,9 @@ void Menu::path_choiceInput(const StopPair &p){
             case 'd':
                 loop = false;
                 if (p.type == 1){
-                    cout << "==PLACEHOLDER==" << endl;
-                    cout << "Indica caminho com menos mudancas de zonaa entre a paragem " << p.origin <<endl
-                         <<" e a paragem "<<p.destination<<endl;
+                    for(auto i : convertPath(graph.dijkstra_path_zone(stopIDs[p.origin], stopIDs[p.destination]))){
+                        cout << i << " - ";
+                    }
                     cout << "Insira 0 para voltar ao menu principal"<<endl;
                     while(!checkZeroInput(input)){
                         cin.clear();

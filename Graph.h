@@ -33,7 +33,7 @@ class Graph {
 
     struct Node {
         list<Edge> adj; // The list of outgoing edges (to adjacent nodes)
-        int dist;
+        float dist;
         int pred;
         bool visited;
         string name;
@@ -65,6 +65,7 @@ public:
     // ----- Functions to implement in this class -----
     float dijkstra_distance(int a, int b);
     list<int> dijkstra_path_dist(int a, int b);
+    list<int> dijkstra_path_zone(int a, int b);
     void dijkstra_dist(int a);
 
     void dijkstra_zone_change(int s);
