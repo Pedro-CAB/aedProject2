@@ -53,6 +53,8 @@ public:
     vector<Stop> getLine(string lineName, const string &dir, const vector<Stop> &stops);
 
     //Auxiliares
+    string coordToStop(float lat,float lon);
+    float haversine(float lat1, float lon1, float lat2, float lon2);
     static bool isFloat(const string &str);
     static bool isInt (const string &str);
     bool stopExists(const string &name);
@@ -60,6 +62,5 @@ public:
     float floatInputCheck();
     string checkStopInput();
     bool checkZeroInput(const string &str);
-    static StopPair createStopPair1(string origin, string destination);
-    static StopPair createStopPair2(float latO, float lonO, float latD, float lonD);
+    static StopPair createStopPair(string origin, string destination);
 };

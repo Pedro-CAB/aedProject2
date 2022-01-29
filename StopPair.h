@@ -7,9 +7,7 @@
 
 
 struct StopPair {
-    int type;
     string origin, destination;
-    float latO,lonO,latD,lonD;
 };
 
 

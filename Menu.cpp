@@ -16,6 +16,30 @@ Menu::Menu():graph(2487, true) {
 }
 
 //Funções Auxiliares ===============================================================================
+string Menu::coordToStop(float lat, float lon){
+    string closestStop = "NULL";
+    float minDist = 0.06;
+    for (Stop s : stops){
+        int lat2 = s.lat, lon2 = s.lon;
+        float dist = haversine(lat,lon,lat2,lon2);
+        if (dist <= 0.05 && dist < minDist){
+            minDist = dist;
+            closestStop = s.code;
+        }
+    }
+    return closestStop;
+}
+
+float Menu::haversine(float lat1, float lon1, float lat2, float lon2){
+    float dLat = (lat2-lat1)* M_PI / 180;
+    float dLon = (lon2-lon1)* M_PI / 180;
+    lat1 = lat1 * M_PI /180;
+    lat2 = lat2 * M_PI /180;
+    float a = pow(sin(dLat / 2), 2) + pow(sin(dLon / 2), 2) * cos(lat1) * cos(lat2);
+    float rad = 6371;
+    float c = 2 * asin(sqrt(a));
+    return rad * c;
+}
 bool Menu::isFloat(const string &str){
     istringstream iss(str);
     float f;
@@ -91,30 +115,14 @@ bool Menu::checkZeroInput(const string &input){
     }
     return false;
 }
-StopPair Menu::createStopPair1(string origin, string destination){
+StopPair Menu::createStopPair(string origin, string destination){
     StopPair p;
-    p.type = 1, p.origin = origin, p.destination = destination, p.latO = 0, p.lonO = 0,p.latD = 0, p.lonD = 0;
-    return p;
-}
-StopPair Menu::createStopPair2(float latO, float lonO, float latD, float lonD){
-    StopPair p;
-    p.type = 2, p.origin = "", p.destination = "", p.latO = latO, p.lonO = lonO,p.latD = latD, p.lonD = lonD;
+    p.origin = origin, p.destination = destination;
     return p;
 }
 
 float Menu::distance(Stop stop1, Stop stop2){
-    double dLat = (stop2.lat - stop1.lat) * M_PI / 180.0;
-    double dLon = (stop2.lon - stop1.lon) * M_PI / 180.0;
-
-    // convert to radians
-    stop1.lat = (stop1.lat) * M_PI / 180.0;
-    stop2.lat = (stop2.lat) * M_PI / 180.0;
-
-    // apply formulae
-    double a = pow(sin(dLat / 2), 2) + pow(sin(dLon / 2), 2) * cos(stop1.lat) * cos(stop2.lat);
-    double rad = 6371;
-    double c = 2 * asin(sqrt(a));
-    return rad * c *1000;
+    return haversine(stop1.lat,stop1.lon,stop2.lat,stop2.lon);
 }
 
 int Menu::zoneChange(Stop stop1, Stop stop2){
@@ -320,20 +328,38 @@ void Menu::stop_options() {
 }
 void Menu::coord_input() {
     float latO, lonO, latD, lonD;
-    string destination;
-    cout << "Insira a sua latitude atual:" << endl;
-    cout << "(Pressione 0 para voltar ao menu)" << endl;
-    latO = floatInputCheck();
-    cout << "Insira a sua longitude atual:" <<endl;
-    cout << "(Pressione 0 para voltar ao menu)"<<endl;
-    lonO = floatInputCheck();
-    cout << "Insira a latitude do seu destino:" << endl;
-    cout << "(Pressione 0 para voltar ao menu)" << endl;
-    latD = floatInputCheck();
-    cout << "Insira a longitude do seu destino:" <<endl;
-    cout << "(Pressione 0 para voltar ao menu)"<<endl;
-    lonD = floatInputCheck();
-    path_choice(createStopPair2(latO,lonO,latD,lonD));
+    string origin, destination;
+    while(true) {
+        cout << "Insira a sua latitude atual:" << endl;
+        cout << "(Pressione 0 para voltar ao menu)" << endl;
+        latO = floatInputCheck();
+        cout << "Insira a sua longitude atual:" << endl;
+        cout << "(Pressione 0 para voltar ao menu)" << endl;
+        lonO = floatInputCheck();
+        if (coordToStop(latO, lonO) != "NULL") {
+            origin = coordToStop(latO, lonO);
+            break;
+        }
+        else{
+            cout << "Nao existe nenhuma estacao nas proximidades da localizacao de partida designada. "<<endl<<"Por favor insira outras coordenadas."<<endl;
+        }
+    }
+    while(true) {
+        cout << "Insira a latitude do seu destino:" << endl;
+        cout << "(Pressione 0 para voltar ao menu)" << endl;
+        latD = floatInputCheck();
+        cout << "Insira a longitude do seu destino:" << endl;
+        cout << "(Pressione 0 para voltar ao menu)" << endl;
+        lonD = floatInputCheck();
+        if (coordToStop(latD, lonD) != "NULL") {
+            destination = coordToStop(latD, lonD);
+            break;
+        }
+        else{
+            cout << "O destino escolhido nao possui paragens nas proximidades. "<<endl<<"Por favor insira outras coordenadas de destino."<<endl;
+        }
+    }
+    path_choice(createStopPair(origin,destination));
 }
 void Menu::stop_input(){
     string origin, destination;
@@ -341,7 +367,7 @@ void Menu::stop_input(){
     origin = checkStopInput();
     cout << "Insira o codigo da paragem de destino abaixo:"<<endl;
     destination = checkStopInput();
-    path_choice(createStopPair1(origin,destination));
+    path_choice(createStopPair(origin,destination));
 
 }
 void Menu::path_choice(const StopPair &p){
@@ -365,125 +391,73 @@ void Menu::path_choiceInput(const StopPair &p){
             case 'A':
             case 'a':
                 loop = false;
-                if (p.type == 1){
-                    j = 0;
-                    for(const auto &i : convertPath(graph.bfs_path(stopIDs[p.origin], stopIDs[p.destination]))){
-                        if (j == 0){
-                            cout << "PARTIDA : " << i << endl;
-                        }
-                        else if (j>0 && j<convertPath(graph.bfs_path(stopIDs[p.origin], stopIDs[p.destination])).size()-1){
-                            cout <<"  ||==>" << i << endl;
-                        }
-                        else{
-                            cout <<"CHEGADA : "<< i << endl;
-                        }
-                        j++;
+                j = 0;
+                for(const auto &i : convertPath(graph.bfs_path(stopIDs[p.origin], stopIDs[p.destination]))){
+                    if (j == 0){
+                        cout << "PARTIDA : " << i << endl;
                     }
-                    cout << "Paragens : "<<graph.bfs_path(stopIDs[p.origin], stopIDs[p.destination]).size()<<endl;
-                    cout << "Insira 0 para voltar ao menu principal"<<endl;
-                    while(!checkZeroInput(input)){
-                        cin.clear();
-                        getline(cin,input);
-                        invalid_Input();
+                    else if (j>0 && j<convertPath(graph.bfs_path(stopIDs[p.origin], stopIDs[p.destination])).size()-1){
+                        cout <<"  ||==>" << i << endl;
                     }
+                    else{
+                        cout <<"CHEGADA : "<< i << endl;
+                    }
+                    j++;
                 }
-                else{
-                    cout << "==PLACEHOLDER==" << endl;
-                    cout << "Indica caminho com menos paragens entre as coordenadas (" << p.latO << ", " << p.lonO << ")"<< endl
-                        <<" e as coordenadas ( "<< p.latD << ", "<< p.lonD<< ")"<<endl;
-                    cout << "Insira 0 para voltar ao menu principal"<<endl;
-                    while(!checkZeroInput(input)){
-                        cin.clear();
-                        getline(cin,input);
-                        invalid_Input();
-                    }
+                cout << "Paragens : "<<graph.bfs_path(stopIDs[p.origin], stopIDs[p.destination]).size()<<endl;
+                cout << "Insira 0 para voltar ao menu principal"<<endl;
+                while(!checkZeroInput(input)){
+                    cin.clear();
+                    getline(cin,input);
+                    invalid_Input();
                 }
                 break;
             case 'B':
             case 'b':
                 loop = false;
-                if (p.type == 1) {
-                    j = 0;
-                    for (const auto &i: convertPath(graph.bfs_path(stopIDs[p.origin], stopIDs[p.destination]))) {
-                        if (j == 0) {
-                            cout << "PARTIDA : " << i << endl;
-                        } else if (j > 0 && j < convertPath(
-                                graph.dijkstra_path_dist(stopIDs[p.origin], stopIDs[p.destination])).size() - 1) {
-                            cout << "  ||==>" << i << endl;
-                        } else {
-                            cout << "CHEGADA : " << i << endl;
-                        }
-                        j++;
+                j = 0;
+                for (const auto &i: convertPath(graph.bfs_path(stopIDs[p.origin], stopIDs[p.destination]))) {
+                    if (j == 0) {
+                        cout << "PARTIDA : " << i << endl;
+                    } else if (j > 0 && j < convertPath(
+                            graph.dijkstra_path_dist(stopIDs[p.origin], stopIDs[p.destination])).size() - 1) {
+                        cout << "  ||==>" << i << endl;
+                    } else {
+                        cout << "CHEGADA : " << i << endl;
                     }
-                        cout << endl << "Insira 0 para voltar ao menu principal" << endl;
-                        while (!checkZeroInput(input)) {
-                            cin.clear();
-                            getline(cin, input);
-                            invalid_Input();
-                        }
+                    j++;
                 }
-                else{
-                    cout << "==PLACEHOLDER==" << endl;
-                    cout << "Indica caminho que percorre menor distancia entre as coordenadas (" << p.latO << ", " << p.lonO << ")"<< endl
-                         <<" e as coordenadas ( "<< p.latD << ", "<< p.lonD<< ")"<<endl;
-                    cout << "Insira 0 para voltar ao menu principal"<<endl;
-                    while(!checkZeroInput(input)){
-                        cin.clear();
-                        getline(cin,input);
-                        invalid_Input();
-                    }
+                cout << endl << "Insira 0 para voltar ao menu principal" << endl;
+                while (!checkZeroInput(input)) {
+                    cin.clear();
+                    getline(cin, input);
+                    invalid_Input();
                 }
                 break;
             case 'C':
             case 'c':
                 loop = false;
-                if (p.type == 1){
-                    cout << "==PLACEHOLDER==" << endl;
-                    cout << "Indica caminho com menos mudancas de linha entre a paragem " << p.origin <<endl
-                         <<" e a paragem "<<p.destination<<endl;
-                    cout << "Insira 0 para voltar ao menu principal"<<endl;
-                    while(!checkZeroInput(input)){
-                        cin.clear();
-                        getline(cin,input);
-                        invalid_Input();
-                    }
-                }
-                else{
-                    cout << "==PLACEHOLDER==" << endl;
-                    cout << "Indica caminho com menos mudancas de linha entre as coordenadas (" << p.latO << ", " << p.lonO << ")"<< endl
-                         <<" e as coordenadas ( "<< p.latD << ", "<< p.lonD<< ")"<<endl;
-                    cout << "Insira 0 para voltar ao menu principal"<<endl;
-                    while(!checkZeroInput(input)){
-                        cin.clear();
-                        getline(cin,input);
-                        invalid_Input();
-                    }
+                cout << "==PLACEHOLDER==" << endl;
+                cout << "Indica caminho com menos mudancas de linha entre a paragem " << p.origin <<endl
+                <<" e a paragem "<<p.destination<<endl;
+                cout << "Insira 0 para voltar ao menu principal"<<endl;
+                while(!checkZeroInput(input)){
+                    cin.clear();
+                    getline(cin,input);
+                    invalid_Input();
                 }
                 break;
             case 'D':
             case 'd':
                 loop = false;
-                if (p.type == 1){
-                    for(const auto &i : convertPath(graph.dijkstra_path_zone(stopIDs[p.origin], stopIDs[p.destination]))){
-                        cout << i << " - ";
-                    }
-                    cout << "Insira 0 para voltar ao menu principal"<<endl;
-                    while(!checkZeroInput(input)){
-                        cin.clear();
-                        getline(cin,input);
-                        invalid_Input();
-                    }
+                for(const auto &i : convertPath(graph.dijkstra_path_zone(stopIDs[p.origin], stopIDs[p.destination]))){
+                    cout << i << " - ";
                 }
-                else{
-                    cout << "==PLACEHOLDER==" << endl;
-                    cout << "Indica caminho com menos mudancas de zona entre as coordenadas (" << p.latO << ", " << p.lonO << ")"<< endl
-                         <<" e as coordenadas ( "<< p.latD << ", "<< p.lonD<< ")"<<endl;
-                    cout << "Insira 0 para voltar ao menu principal"<<endl;
-                    while(!checkZeroInput(input)){
-                        cin.clear();
-                        getline(cin,input);
-                        invalid_Input();
-                    }
+                cout << "Insira 0 para voltar ao menu principal"<<endl;
+                while(!checkZeroInput(input)){
+                    cin.clear();
+                    getline(cin,input);
+                    invalid_Input();
                 }
                 break;
             default:
