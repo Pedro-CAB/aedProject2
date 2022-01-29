@@ -7,7 +7,7 @@
 
 struct StopDist{
     string code;
-    int dist;
+    float dist;
 };
 
 #endif //AED2122_TRABALHO2_STOPDIST_H

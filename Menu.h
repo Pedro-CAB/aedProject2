@@ -30,7 +30,7 @@ public:
     map<int, string> lineName;
     bool on = true;
     bool byCoords = false;
-    int originDist, destinationDist;
+    float originDist, destinationDist;
     Graph graph;
     Menu();
 

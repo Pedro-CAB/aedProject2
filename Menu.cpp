@@ -19,15 +19,14 @@ StopDist Menu::coordToStop(float lat, float lon){
     string closestStop = "NULL";
     float minDist = INT_MAX;
     for (Stop s : stops){
-        int lat2 = s.lat, lon2 = s.lon;
+        float lat2 = s.lat, lon2 = s.lon;
         float dist = haversine(lat,lon,lat2,lon2);
-        if (dist < 100 && dist < minDist){
+        if (dist < minDist){
             minDist = dist;
             closestStop = s.code;
         }
     }
-    int a = minDist;
-    return StopDist({closestStop,a});
+    return StopDist({closestStop,minDist});
 }
 
 float Menu::haversine(float lat1, float lon1, float lat2, float lon2){
@@ -340,6 +339,7 @@ void Menu::coord_input() {
         if (coordToStop(latO, lonO).code != "NULL") {
             origin = coordToStop(latO, lonO).code;
             originDist = coordToStop(latO, lonO).dist;
+            //cout << "A paragem mais perto da sua localização é : " << origin << "A " << originDist << " metros" << endl;
             break;
         }
         else{
@@ -356,6 +356,7 @@ void Menu::coord_input() {
         if (coordToStop(latD, lonD).code != "NULL") {
             destination = coordToStop(latD, lonD).code;
             destinationDist = coordToStop(latD, lonD).dist;
+            //cout << "A paragem mais perto do seu destino é : "  << destination << "A " << destinationDist << " metros" << endl;
             break;
         }
         else{
