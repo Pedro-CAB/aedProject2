@@ -9,6 +9,7 @@
 
 #include "Graph.h"
 #include "StopPair.h"
+#include "StopDist.h"
 #include <list>
 #include <map>
 #include <iostream>
@@ -28,6 +29,8 @@ public:
     map<int, string> stopName;
     map<int, string> lineName;
     bool on = true;
+    bool byCoords = false;
+    int originDist, destinationDist;
     Graph graph;
     Menu();
 
@@ -53,7 +56,7 @@ public:
     vector<Stop> getLine(string lineName, const string &dir, const vector<Stop> &stops);
 
     //Auxiliares
-    string coordToStop(float lat,float lon);
+    StopDist coordToStop(float lat,float lon);
     float haversine(float lat1, float lon1, float lat2, float lon2);
     static bool isFloat(const string &str);
     static bool isInt (const string &str);

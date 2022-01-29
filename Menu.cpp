@@ -2,6 +2,7 @@
 // Created by Aulas FEUP on 27/01/2022.
 //
 #include "Menu.h"
+#include "StopDist.h"
 #include <cmath>
 
 using namespace::std;
@@ -14,7 +15,7 @@ Menu::Menu():graph(2487, true) {
 }
 
 //Funções Auxiliares ===============================================================================
-string Menu::coordToStop(float lat, float lon){
+StopDist Menu::coordToStop(float lat, float lon){
     string closestStop = "NULL";
     float minDist = INT_MAX;
     for (Stop s : stops){
@@ -25,7 +26,8 @@ string Menu::coordToStop(float lat, float lon){
             closestStop = s.code;
         }
     }
-    return closestStop;
+    int a = minDist;
+    return StopDist({closestStop,a});
 }
 
 float Menu::haversine(float lat1, float lon1, float lat2, float lon2){
@@ -290,6 +292,7 @@ bool Menu::menu_intro() {
     return on;
 }
 void Menu::stop_optionsDisplay() {
+    byCoords = false;
     cout << "Como prefere inserir a localizacao de partida?"<<endl;
     cout << "A) Atraves das suas Coordenadas"<<endl;
     cout << "B) Atraves do Nome da Paragem Escolhida"<<endl;
@@ -324,6 +327,7 @@ void Menu::stop_options() {
     }
 }
 void Menu::coord_input() {
+    byCoords = true;
     float latO, lonO, latD, lonD;
     string origin, destination;
     while(true) {
@@ -333,8 +337,9 @@ void Menu::coord_input() {
         cout << "Insira a sua longitude atual:" << endl;
         cout << "(Pressione 0 para voltar ao menu)" << endl;
         lonO = floatInputCheck();
-        if (coordToStop(latO, lonO) != "NULL") {
-            origin = coordToStop(latO, lonO);
+        if (coordToStop(latO, lonO).code != "NULL") {
+            origin = coordToStop(latO, lonO).code;
+            originDist = coordToStop(latO, lonO).dist;
             break;
         }
         else{
@@ -348,8 +353,9 @@ void Menu::coord_input() {
         cout << "Insira a longitude do seu destino:" << endl;
         cout << "(Pressione 0 para voltar ao menu)" << endl;
         lonD = floatInputCheck();
-        if (coordToStop(latD, lonD) != "NULL") {
-            destination = coordToStop(latD, lonD);
+        if (coordToStop(latD, lonD).code != "NULL") {
+            destination = coordToStop(latD, lonD).code;
+            destinationDist = coordToStop(latD, lonD).dist;
             break;
         }
         else{
@@ -391,6 +397,9 @@ void Menu::path_choiceInput(const StopPair &p){
                 loop = false;
                 j = 0;
                 path = convertPath(graph.bfs_path(stopIDs[p.origin], stopIDs[p.destination]));
+                if (originDist > 0 && byCoords){
+                    cout << "Caminhe "<< originDist<< " metros."<<endl;
+                }
                 for(const auto &i :path){
                     if (j == 0){
                         cout << "PARTIDA : " << i << endl;
@@ -402,6 +411,9 @@ void Menu::path_choiceInput(const StopPair &p){
                         cout <<"CHEGADA : "<< i << endl;
                     }
                     j++;
+                }
+                if (destinationDist > 0 && byCoords){
+                    cout << "Após sair da paragem, caminhe "<< destinationDist<< " metros."<<endl;
                 }
                 cout << "Paragens : "<<path.size()<<endl;
                 cout << "Insira 0 para voltar ao menu principal"<<endl;
@@ -416,6 +428,9 @@ void Menu::path_choiceInput(const StopPair &p){
                 loop = false;
                 j = 0;
                 path = convertPath(graph.dijkstra_path_dist(stopIDs[p.origin], stopIDs[p.destination]));
+                if (originDist > 0 && byCoords){
+                    cout << "Caminhe "<< originDist<< " metros."<<endl;
+                }
                 for(const auto &i :path){
                     if (j == 0){
                         cout << "PARTIDA : " << i << endl;
@@ -427,6 +442,9 @@ void Menu::path_choiceInput(const StopPair &p){
                         cout <<"CHEGADA : "<< i << endl;
                     }
                     j++;
+                }
+                if (destinationDist > 0 && byCoords){
+                    cout << "Após sair da paragem, caminhe "<< destinationDist<< " metros."<<endl;
                 }
                 cout << "Paragens : "<<path.size()<< " Distancia total : " << graph.nodes.at(stopIDs[p.destination]).dist<<endl ;
                 cout << endl << "Insira 0 para voltar ao menu principal" << endl;
@@ -454,6 +472,9 @@ void Menu::path_choiceInput(const StopPair &p){
                 loop = false;
                 j = 0;
                 path = convertPath(graph.dijkstra_path_zone(stopIDs[p.origin], stopIDs[p.destination]));
+                if (originDist > 0 && byCoords){
+                    cout << "Caminhe "<< originDist<< " metros."<<endl;
+                }
                 for(const auto &i :path){
                     if (j == 0){
                         cout << "PARTIDA : " << i << endl;
@@ -465,6 +486,9 @@ void Menu::path_choiceInput(const StopPair &p){
                         cout <<"CHEGADA : "<< i << endl;
                     }
                     j++;
+                }
+                if (destinationDist > 0 && byCoords){
+                    cout << "Após sair da paragem, caminhe "<< destinationDist<< " metros."<<endl;
                 }
                 cout << "Paragens : "<<path.size()<< " Mudanças de zona : " << graph.nodes.at(stopIDs[p.destination]).dist<<endl ;
                 cout << "Insira 0 para voltar ao menu principal"<<endl;
