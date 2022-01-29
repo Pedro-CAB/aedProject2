@@ -13,7 +13,6 @@ Graph::Graph(int num, bool dir) : n(num), hasDir(dir), nodes(num+1) {
 void Graph::addEdge(int src, int dest, Weight weight, string line) {
 
     if (src<0 || src>n || dest<0 || dest>n) return;
-    //cout<< "+ ";
     nodes[src].adj.push_back({dest, line, weight});
     if (!hasDir) nodes[dest].adj.push_back({src, line, weight});
 }
@@ -120,9 +119,11 @@ list<int> Graph::dijkstra_path_zone(int a, int b) {
     return path;
 }
 
-// Dijkstra in O(|E| log |V|) using only the MinHeap that was given to you
 /*
  * Esta função calcula a menor distância entre os nós do graph
+ *
+ * Complexidade temporal: O(|E| log|V|), sendo E -> número de arestas V -> número de nós, usando as
+ * MinHeaps
  */
 void Graph::dijkstra_dist(int s) {
     MinHeap<int, int> q(n, -1);
@@ -142,7 +143,6 @@ void Graph::dijkstra_dist(int s) {
             int w = e.weight.dist;
             if (!nodes[v].visited && nodes[u].dist + w < nodes[v].dist) {
                 nodes[v].dist = nodes[u].dist + w;
-                //cout << w << " ";
                 q.decreaseKey(v, nodes[v].dist);
                 nodes[v].pred = u;
             }
@@ -152,6 +152,8 @@ void Graph::dijkstra_dist(int s) {
 
 /*
  * Esta função calcula o menor número de vezes que se muda de zona entre todos os nós
+ *
+ * Complexidade temporal: O(|E| log|V|), igual ao dijkstra_dist()
  */
 void Graph::dijkstra_zone_change(int s){
     MinHeap<int, int> q(n, -1);
@@ -165,7 +167,6 @@ void Graph::dijkstra_zone_change(int s){
     nodes[s].pred = s;
     while (q.getSize()>0) {
         int u = q.removeMin();
-        //cout << "Node " << u << " with dist = " << nodes[u].dist << endl;
         nodes[u].visited = true;
         for (auto e : nodes[u].adj) {
             int v = e.dest;

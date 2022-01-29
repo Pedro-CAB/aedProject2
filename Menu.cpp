@@ -136,6 +136,9 @@ int Menu::zoneChange(Stop stop1, Stop stop2){
 /*
  * Esta função adiciona as arestas ao graph, no sentido direto e no sentido inverso (exceto das linhas
  * circulares, nesse caso só adiciona ao sentido direto)
+ *
+ * Complexidade temporal: O(n^2), porque tem que percorrer o vector<Line> line e o vector<Stop> itinerary
+ * que pertence a cada elemento de line
  */
 void Menu::addEdges(Stop &stop){
     int scr, dest, it_pred, it_next, zone_c;
@@ -145,13 +148,10 @@ void Menu::addEdges(Stop &stop){
         for(int it = 0; it < line.itinerary.size(); it++) {
             if (line.itinerary.at(it).code == stop.code) {
                 it_next = it + 1;
-                //cout << line.code<< " " << it_pred << " " << it_next << " ";
                 if (it < line.itinerary.size() - 1) {
                     dest = stopIDs[line.itinerary.at(it_next).code];
-                    //cout << dest <<" ";
                     dist = distance(line.itinerary.at(it), line.itinerary.at(it_next));
                     zone_c = zoneChange(line.itinerary.at(it), line.itinerary.at(it_next));
-                    //cout << line.itinerary.at(it_next).code << " " << dist << " " << zone_c;
                     graph.addEdge(scr, dest, {dist, zone_c}, line.name);
                 }
             }
@@ -172,17 +172,12 @@ void Menu::addEdges(Stop &stop){
             }
         }
     }
-    if (graph.nodes.at(scr).adj.size() == 0)
-        cout <<stop.code << " " << scr << " " << graph.nodes.at(scr).adj.size() << endl;
 }
 
 //Leitura de Ficheiros ================================================================================
 void Menu::readFiles() {
     readStops();
     readLines();
-    //cout << "N Paragens no Vetor: "<< stops.size() << " N Linhas no Vetor: " << lines.size()<<endl;
-    //cout << "N Paragens no Map: "<< stopIDs.size() << " N Linhas no Mapa: " << lineIDs.size()<<endl;
-    //cout << "N Paragens no Graph: "<< graph.nodes.size();
 }
 
 /*
@@ -289,6 +284,8 @@ void Menu::readLines() {
 /*
  * Esta função retorna uma lista com o nome das estações de autocarros, a partir da lista de int que
  * representam os nós do graph
+ *
+ * Complexidade temporal: O(n), porque percorremos todos os elementos da lista
  */
 list<string> Menu::convertPath(list<int> ids) {
     list<string> path;
@@ -375,7 +372,6 @@ void Menu::coord_input() {
         if (coordToStop(latD, lonD).code != "NULL") {
             destination = coordToStop(latD, lonD).code;
             destinationDist = coordToStop(latD, lonD).dist;
-            //cout << "A paragem mais perto do seu destino é : "  << destination << "A " << destinationDist << " metros" << endl;
             break;
         }
         else{
