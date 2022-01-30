@@ -321,8 +321,8 @@ list<StopNameCode> Menu::convertPath(list<int> ids) {
 bool Menu::menu_intro() {
     if(on) {
         cout << "======================== STCP Paragens ========================" << endl;
-        cout << "Bem vindo ao assistente de utilizacao das rede STCP!" << endl;
-        cout << "Selecione a opcao desejada de entre as abaixo:" << endl;
+        cout << "Bem vindo ao assistente de utilizacao da rede STCP!" << endl;
+        cout << "Selecione a opcao desejada de entre as seguintes:" << endl;
         stop_optionsDisplay();
     }
 
